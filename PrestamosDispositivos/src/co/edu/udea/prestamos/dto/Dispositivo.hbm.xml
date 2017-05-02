@@ -3,9 +3,9 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 2/05/2017 01:33:28 PM by Hibernate Tools 3.5.0.Final -->
 <hibernate-mapping>
-    <class name="co.edu.udea.prestamos.dto.EstadoUsuario" table="ESTADOSUSUARIOS">
-        <id name="codEstadoU" type="int">
-            <column name="CODESTADOU" />
+    <class name="co.edu.udea.prestamos.dto.Dispositivo" table="DISPOSITIVO">
+        <id name="idDispositivo" type="int">
+            <column name="IDDISPOSITIVO" />
             <generator class="assigned" />
         </id>
         <property name="nombre" type="java.lang.String">
@@ -14,5 +14,8 @@
         <property name="descripcion" type="java.lang.String">
             <column name="DESCRIPCION" />
         </property>
+        <many-to-one name="tipo" class="co.edu.udea.prestamos.dto.TipoDispositivo" fetch="join">
+            <column name="TIPO" />
+        </many-to-one>
     </class>
 </hibernate-mapping>
