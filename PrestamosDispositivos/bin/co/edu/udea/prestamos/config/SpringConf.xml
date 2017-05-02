@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
+	   
+	<!-- Con el siguiente bean se definen todas las propiedades de conexion necesarias con la base de datos -->
+	<bean id="IngWebDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+		<property name="url" value="jdbc:mysql://localhost:3306/prestamosBD"></property>
+		<property name="username" value="root"></property>
+		<property name="password" value=""></property>
+	</bean>
+	
+	<!-- En este bean se hacen todos los mapeos necesarios con cada una de las tablas de la BD, 
+	     como tambien se indica algunas propiedades de la comunicacion: leguaje, validacion, etc. -->
+	<bean id="IngWebSessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource" ref="IngWebDataSource"></property>
+		<property name="mappingResources">
+			<list>
+				
+				
+				
+				<!-- CAMBIAR ESTO -->
+				<value>co/edu/udea/dto/Ciudad.hbm.xml</value>
+				<value>co/edu/udea/dto/Roles.hbm.xml</value>
+				<value>co/edu/udea/dto/Usuario.hbm.xml</value>
+				<value>co/edu/udea/dto/Cliente.hbm.xml</value>
+				<value>co/edu/udea/dto/Direccion.hbm.xml</value>
+				
+				
+				
+				
+				
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>  <!-- Cambiar a false cuando el aplicativo entre en modo de produccion -->
+				<prop key="javax.persistence.validation.mode">none</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!-- Con este otro bean se define quienes seran los reponsables de crear la sesion con la BD
+	     como tambien quien es el origen de datos, en si es un bean que referencia otros beans -->
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="IngWebSessionFactory"></property>
+		<property name="dataSource" ref="IngWebDataSource"></property>
+	</bean>
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- Los siguientes beans seran los responsables de enlazar los DAO con las operaciones disponibles con las tablas de la BD-->
+	
+	
+	
+	
+	
+<!-- 	<bean id="ciudadDAO" class="co.edu.udea.dao.CiudadDAOImpl"> -->
+<!-- 		<property name="sessionFactory" ref="IngWebSessionFactory"></property> -->
+<!-- 	</bean> -->
+	
+<!-- 	<bean id="clienteDAO" class="co.edu.udea.dao.ClienteDAOImpl"> -->
+<!-- 		<property name="sessionFactory" ref="IngWebSessionFactory"></property> -->
+<!-- 	</bean> -->
+	
+<!-- 	<bean id="usuarioDAO" class="co.edu.udea.dao.UsuarioDAOImpl"> -->
+<!-- 		<property name="sessionFactory" ref="IngWebSessionFactory"></property> -->
+<!-- 	</bean> -->
+	
+</beans>
