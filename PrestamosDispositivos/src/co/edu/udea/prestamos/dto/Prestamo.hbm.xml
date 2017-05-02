@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2/05/2017 01:14:50 PM by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="co.edu.udea.prestamos.dto.Prestamo" table="PRESTAMO">
+        <id name="idPrestamo" type="int">
+            <column name="IDPRESTAMO" />
+            <generator class="assigned" />
+        </id>
+        <property name="fechaSolicitud" type="java.util.Date">
+            <column name="FECHASOLICITUD" />
+        </property>
+        <many-to-one name="usuarioSolicita" class="co.edu.udea.prestamos.dto.Usuario" fetch="join">
+            <column name="USUARIOSOLICITA" />
+        </many-to-one>
+        <many-to-one name="usuarioAprueba" class="co.edu.udea.prestamos.dto.Usuario" fetch="join">
+            <column name="USUARIOAPRUEBA" />
+        </many-to-one>
+        <property name="fechaPrestamo" type="java.util.Date">
+            <column name="FECHAPRESTAMO" />
+        </property>
+        <property name="fechaEntrega" type="java.util.Date">
+            <column name="FECHAENTREGA" />
+        </property>
+        <many-to-one name="estado" class="co.edu.udea.prestamos.dto.EstadoPrestamo" fetch="join">
+            <column name="ESTADO" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>
