@@ -3,17 +3,16 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 2/05/2017 01:33:28 PM by Hibernate Tools 3.5.0.Final -->
 <hibernate-mapping>
-	<!--  Mapeo de la tabla Roles -->
-    <class name="co.edu.udea.prestamos.dto.Rol" table="ROLES">
-    
-        <id name="codRol" type="int">
-            <column name="CODROL" precision="11"/>
+    <class name="co.edu.udea.prestamos.dto.EstadoDispositivo" table="ESTADODISPOSITIVO">
+        <id name="codEstadoD" type="int">
+            <column name="CODESTADOD" />
             <generator class="assigned" />
         </id>
-        
         <property name="nombre" type="java.lang.String">
-            <column name="NOMBRE" length="30"/>
+            <column name="NOMBRE" />
         </property>
-        
+        <property name="descripcion" type="java.lang.String">
+            <column name="DESCRIPCION" />
+        </property>
     </class>
 </hibernate-mapping>
