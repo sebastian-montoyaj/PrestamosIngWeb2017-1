@@ -21,7 +21,7 @@ public interface RolDAO
 	public List<Rol> obtenerTodo() throws ExcepcionPrestamos;
 	
 	/**
-	 * Obtiene la informacion de un rol especificado dado su codigo
+	 * Obtiene la informacion de un rol especifico dado su codigo
 	 * @param codigo Codigo del rol que se desea obtener
 	 * @return Objeto {@link Rol} con la informacion que se recupero
 	 * @throws ExcepcionPrestamos Ocurre cuando hay un problema en la conexion con la BD u otra situacion relacionada
@@ -30,7 +30,7 @@ public interface RolDAO
 	
 	/**
 	 * Guarda la informacion de un nuevo rol en la base de datos
-	 * @param rol Objeto {@link Rol} que se desea alamcenar en la base de datos
+	 * @param rol Objeto {@link Rol} que se desea almacenar en la base de datos
 	 * @throws ExcepcionPrestamos Ocurre cuando se presenta un error al insertar
 	 */
 	public void insertar(Rol rol) throws ExcepcionPrestamos;

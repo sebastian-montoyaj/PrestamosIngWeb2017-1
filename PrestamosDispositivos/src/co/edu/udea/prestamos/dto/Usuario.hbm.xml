@@ -3,25 +3,33 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 2/05/2017 01:33:28 PM by Hibernate Tools 3.5.0.Final -->
 <hibernate-mapping>
+	<!--  Mapeo de la tabla Usuarios -->
     <class name="co.edu.udea.prestamos.dto.Usuario" table="USUARIOS">
+    
         <id name="id" type="int">
-            <column name="ID" />
+            <column name="ID" precision="11"/>
             <generator class="assigned" />
         </id>
+        
         <property name="nombre" type="java.lang.String">
-            <column name="NOMBRE" />
+            <column name="NOMBRE" length="50"/>
         </property>
+        
         <property name="apellidos" type="java.lang.String">
-            <column name="APELLIDOS" />
+            <column name="APELLIDOS" length="50"/>
         </property>
+        
         <property name="clave" type="java.lang.String">
-            <column name="CLAVE" />
+            <column name="CLAVE" length="500"/>
         </property>
+        
         <many-to-one name="rol" class="co.edu.udea.prestamos.dto.Rol" fetch="join">
-            <column name="ROL" />
+            <column name="ROL" not-null="true"/>
         </many-to-one>
+        
         <many-to-one name="estado" class="co.edu.udea.prestamos.dto.EstadoUsuario" fetch="join">
-            <column name="ESTADO" />
+            <column name="ESTADO" not-null="true"/>
         </many-to-one>
+        
     </class>
 </hibernate-mapping>

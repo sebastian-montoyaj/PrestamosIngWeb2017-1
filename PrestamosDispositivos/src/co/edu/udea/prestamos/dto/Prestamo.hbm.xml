@@ -3,28 +3,37 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 2/05/2017 01:33:28 PM by Hibernate Tools 3.5.0.Final -->
 <hibernate-mapping>
+	<!--  Mapeo de la tabla Prestamos -->
     <class name="co.edu.udea.prestamos.dto.Prestamo" table="PRESTAMOS">
+    
         <id name="idPrestamo" type="int">
-            <column name="IDPRESTAMO" />
+            <column name="IDPRESTAMO" precision="11"/>
             <generator class="assigned" />
         </id>
+        
         <property name="fechaSolicitud" type="java.util.Date">
             <column name="FECHASOLICITUD" />
         </property>
+        
         <many-to-one name="usuarioSolicita" class="co.edu.udea.prestamos.dto.Usuario" fetch="join">
-            <column name="USUARIOSOLICITA" />
+            <column name="USUARIOSOLICITA" not-null="true"/>
         </many-to-one>
+        
         <many-to-one name="usuarioAprueba" class="co.edu.udea.prestamos.dto.Usuario" fetch="join">
-            <column name="USUARIOAPRUEBA" />
+            <column name="USUARIOAPRUEBA" not-null="true"/>
         </many-to-one>
+        
         <property name="fechaPrestamo" type="java.util.Date">
             <column name="FECHAPRESTAMO" />
         </property>
+        
         <property name="fechaEntrega" type="java.util.Date">
-            <column name="FECHAENTREGA" />
+            <column name="FECHAENTREGA" not-null="false"/>
         </property>
+        
         <many-to-one name="estado" class="co.edu.udea.prestamos.dto.EstadoPrestamo" fetch="join">
-            <column name="ESTADO" />
+            <column name="ESTADO" not-null="true"/>
         </many-to-one>
+        
     </class>
 </hibernate-mapping>

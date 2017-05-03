@@ -3,22 +3,29 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 2/05/2017 01:33:28 PM by Hibernate Tools 3.5.0.Final -->
 <hibernate-mapping>
+	<!--  Mapeo de la tabla Sanciones -->
     <class name="co.edu.udea.prestamos.dto.Sancion" table="SANCIONES">
+    
         <id name="idSancion" type="int">
-            <column name="IDSANCION" />
+            <column name="IDSANCION" precision="11"/>
             <generator class="assigned" />
         </id>
+        
         <property name="tipoSancion" type="java.lang.String">
-            <column name="TIPOSANCION" />
+            <column name="TIPOSANCION" length="25"/>
         </property>
+        
         <many-to-one name="prestamo" class="co.edu.udea.prestamos.dto.Prestamo" fetch="join">
-            <column name="PRESTAMO" />
+            <column name="PRESTAMO" not-null="true"/>
         </many-to-one>
+        
         <property name="descripcion" type="java.lang.String">
-            <column name="DESCRIPCION" />
+            <column name="DESCRIPCION" length="200"/>
         </property>
+        
         <many-to-one name="usuarioSanciona" class="co.edu.udea.prestamos.dto.Usuario" fetch="join">
-            <column name="USUARIOSANCIONA" />
+            <column name="USUARIOSANCIONA" not-null="true"/>
         </many-to-one>
+        
     </class>
 </hibernate-mapping>

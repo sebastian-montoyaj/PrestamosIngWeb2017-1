@@ -8,7 +8,6 @@
     
         <id name="codRol" type="int">
             <column name="CODROL" precision="11"/>
-            <generator class="assigned" />
         </id>
         
         <property name="nombre" type="java.lang.String">

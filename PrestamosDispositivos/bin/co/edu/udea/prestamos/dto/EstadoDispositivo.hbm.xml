@@ -3,16 +3,20 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 2/05/2017 01:33:28 PM by Hibernate Tools 3.5.0.Final -->
 <hibernate-mapping>
+	<!--  Mapeo de la tabla EstadoDispositivo -->
     <class name="co.edu.udea.prestamos.dto.EstadoDispositivo" table="ESTADODISPOSITIVO">
+    
         <id name="codEstadoD" type="int">
-            <column name="CODESTADOD" />
-            <generator class="assigned" />
+            <column name="CODESTADOD" precision="11"/>
         </id>
+        
         <property name="nombre" type="java.lang.String">
-            <column name="NOMBRE" />
+            <column name="NOMBRE" length="30"/>
         </property>
+        
         <property name="descripcion" type="java.lang.String">
-            <column name="DESCRIPCION" />
+            <column name="DESCRIPCION" length="500"/>
         </property>
+        
     </class>
 </hibernate-mapping>

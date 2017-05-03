@@ -3,19 +3,25 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 2/05/2017 01:33:28 PM by Hibernate Tools 3.5.0.Final -->
 <hibernate-mapping>
+	<!--  Mapeo de la tabla Dispositivo -->
     <class name="co.edu.udea.prestamos.dto.Dispositivo" table="DISPOSITIVO">
+    
         <id name="idDispositivo" type="int">
-            <column name="IDDISPOSITIVO" />
+            <column name="IDDISPOSITIVO" precision="11"/>
             <generator class="assigned" />
         </id>
+        
         <property name="nombre" type="java.lang.String">
-            <column name="NOMBRE" />
+            <column name="NOMBRE" length="100"/>
         </property>
+        
         <property name="descripcion" type="java.lang.String">
-            <column name="DESCRIPCION" />
+            <column name="DESCRIPCION" length="500"/>
         </property>
+        
         <many-to-one name="tipo" class="co.edu.udea.prestamos.dto.TipoDispositivo" fetch="join">
-            <column name="TIPO" />
+            <column name="TIPO" not-null="true"/>
         </many-to-one>
+        
     </class>
 </hibernate-mapping>
