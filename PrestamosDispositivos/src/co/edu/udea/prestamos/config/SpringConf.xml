@@ -50,21 +50,48 @@
 	</bean>
 	
 	<!-- Los siguientes beans seran los responsables de enlazar los DAO con las operaciones disponibles con las tablas de la BD-->
+	<bean id="RolDAO" class="co.edu.udea.prestamos.dao.RolDAOImpl">
+		<property name="sessionFactory" ref="IngWebSessionFactory"></property>
+	</bean>
 	
+	<bean id="EstadoUsuarioDAO" class="co.edu.udea.prestamos.dao.EstadoUsuarioDAOImpl">
+		<property name="sessionFactory" ref="IngWebSessionFactory"></property>
+	</bean>
 	
+	<bean id="EstadoPrestamoDAO" class="co.edu.udea.prestamos.dao.EstadoPrestamoDAOImpl">
+		<property name="sessionFactory" ref="IngWebSessionFactory"></property>
+	</bean>
 	
+	<bean id="EstadoDispositivoDAO" class="co.edu.udea.prestamos.dao.EstadoDispositivoDAOImpl">
+		<property name="sessionFactory" ref="IngWebSessionFactory"></property>
+	</bean>
 	
+	<bean id="TipoDispositivoDAO" class="co.edu.udea.prestamos.dao.TipoDispositivoDAOImpl">
+		<property name="sessionFactory" ref="IngWebSessionFactory"></property>
+	</bean>
 	
-<!-- 	<bean id="ciudadDAO" class="co.edu.udea.dao.CiudadDAOImpl"> -->
-<!-- 		<property name="sessionFactory" ref="IngWebSessionFactory"></property> -->
-<!-- 	</bean> -->
+	<bean id="DispositivoDAO" class="co.edu.udea.prestamos.dao.DispositivoDAOImpl">
+		<property name="sessionFactory" ref="IngWebSessionFactory"></property>
+	</bean>
 	
-<!-- 	<bean id="clienteDAO" class="co.edu.udea.dao.ClienteDAOImpl"> -->
-<!-- 		<property name="sessionFactory" ref="IngWebSessionFactory"></property> -->
-<!-- 	</bean> -->
+	<bean id="EjemplarDispositivoDAO" class="co.edu.udea.prestamos.dao.EjemplarDispositivoDAOImpl">
+		<property name="sessionFactory" ref="IngWebSessionFactory"></property>
+	</bean>
 	
-<!-- 	<bean id="usuarioDAO" class="co.edu.udea.dao.UsuarioDAOImpl"> -->
-<!-- 		<property name="sessionFactory" ref="IngWebSessionFactory"></property> -->
-<!-- 	</bean> -->
+	<bean id="UsuarioDAO" class="co.edu.udea.prestamos.dao.UsuarioDAOImpl">
+		<property name="sessionFactory" ref="IngWebSessionFactory"></property>
+	</bean>
+	
+	<bean id="PrestamoDAO" class="co.edu.udea.prestamos.dao.PrestamoDAOImpl">
+		<property name="sessionFactory" ref="IngWebSessionFactory"></property>
+	</bean>
+	
+	<bean id="ItemsPrestamoDAO" class="co.edu.udea.prestamos.dao.ItemsPrestamoDAOImpl">
+		<property name="sessionFactory" ref="IngWebSessionFactory"></property>
+	</bean>
+	
+	<bean id="SancionDAO" class="co.edu.udea.prestamos.dao.SancionDAOImpl">
+		<property name="sessionFactory" ref="IngWebSessionFactory"></property>
+	</bean>
 	
 </beans>
