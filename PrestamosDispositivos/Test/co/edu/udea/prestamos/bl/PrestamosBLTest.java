@@ -26,7 +26,6 @@ import co.edu.udea.prestamos.dto.Prestamo;
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional //Para especificarle a Spring que la prueba es transaccional,(osea contra la base de datos)
 @ContextConfiguration(locations="classpath:co/edu/udea/prestamos/config/SpringConf.xml")//Para decirle a spring donde esta el archivo de configuracion
-
 public class PrestamosBLTest {
 	@Autowired
 	PrestamosBL prestamoBL;	
@@ -43,7 +42,7 @@ public class PrestamosBLTest {
  			//Agrego dos ejemplares para registrar en la solicitud
  			listIdEjemplares.add(1);
  			
-			assertTrue(prestamoBL.solicitud(3,1, listIdEjemplares));
+			assertTrue(prestamoBL.solicitud(1, listIdEjemplares));
 			
  		}
  		catch(Exception e){

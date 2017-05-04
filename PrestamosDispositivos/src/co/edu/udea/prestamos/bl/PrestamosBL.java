@@ -1,9 +1,12 @@
 package co.edu.udea.prestamos.bl;
 
+//Importes necesarios para la clase
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
+
+import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.udea.prestamos.dao.UsuarioDAOImpl;
 import co.edu.udea.prestamos.dao.interfaces.EjemplarDispositivoDAO;
@@ -19,20 +22,22 @@ import co.edu.udea.prestamos.dto.Prestamo;
 import co.edu.udea.prestamos.dto.Usuario;
 import co.edu.udea.prestamos.excepcion.ExcepcionPrestamos;
 
-
 /**
-* Clase para realizar las solicitudes de prestamo,confirmar la entrega y las devoluciones de los dispositivos
+* Clase para realizar las solicitudes de prestamo, confirmar la entrega y las devoluciones de los dispositivos
 * @author César Muñoz Roldan
 * @version 1.0 - 03/05/2017
 */
-public class PrestamosBL {
-		
+@Transactional // Esto le indica a la clase que las operaciones que se van a hacer son transaccionales
+public class PrestamosBL
+{
+	// Variables para enlazar/inyectar la informacion de los objetos necesarios que requieren los prestamos en la base de datos
 	private PrestamoDAO prestamoDAO;
 	private UsuarioDAOImpl usuarioDAOImpl;
 	private EstadoPrestamoDAO estadoPrestamoDAO;
 	private ItemsPrestamoDAO itemsPrestamoDAO;
 	private EjemplarDispositivoDAO ejemplarDispositivoDAO;
-		
+	
+	// Metodos getter/setter para las variables que requiere esta clase
 	public PrestamosBL(){
 		
 	}
@@ -78,18 +83,20 @@ public class PrestamosBL {
 	}
 	
 	/**
-	 * 
-	 * @param idPrestamo
-	 * @param idUsuario
-	 * @param listIdEjemplares
-	 * @return
-	 * @throws ExcepcionPrestamos
+	 * RFN2 - Metodo para realizar la solicitud de prestamo
+	 * @param idUsuario Campo con la identificacion del usuario que desea hacer la solicitud
+	 * @param listIdEjemplares Campo con el arreglo de items/ejemplares que el usuario desea prestar
+	 * @return Valor logico que permite conocer el resultado de la operacion
+	 * @throws ExcepcionPrestamos Ocurre cuando el usuario no es valido o se presento un error al insertar
 	 */
-	public boolean solicitud(int idPrestamo,int idUsuario,List<Integer>listIdEjemplares) throws ExcepcionPrestamos{
-		Prestamo prestamo=new Prestamo();
-		EstadoPrestamo estado=new EstadoPrestamo();
-		Usuario usuario=new Usuario();				
-		List<EjemplarDispositivo> listEjemplaresDispositivos =new ArrayList<EjemplarDispositivo>();
+	public boolean solicitud(int idUsuario, List<Integer>listIdEjemplares) throws ExcepcionPrestamos
+	{
+		// Creo los objetos necesarios para el metodo
+		Prestamo prestamo = new Prestamo();
+		EstadoPrestamo estado = new EstadoPrestamo();
+		Usuario usuario = new Usuario();				
+		List<EjemplarDispositivo> listEjemplaresDispositivos = new ArrayList<EjemplarDispositivo>();
+		
 		try{
 			//Se trae la informacion del usuario que realiza la solicitud por su ID
 			usuario=usuarioDAOImpl.obtener(idUsuario);
@@ -103,7 +110,6 @@ public class PrestamosBL {
 				throw new ExcepcionPrestamos("Usuario que realiza la solicitud no esta habilitado para realizar la solicitud");
 			}
 			
-			
 			//Se valida que hayan mas de un dispositivo para solicitar el prestamo
 			if(listIdEjemplares.size()<=0){
 				throw new ExcepcionPrestamos("No se seleccionaron dispositivos a prestar");
@@ -113,7 +119,6 @@ public class PrestamosBL {
 			estado=estadoPrestamoDAO.obtener(1);
 			
 			//Se ingresan los datos de la solicitud
-			prestamo.setIdPrestamo(idPrestamo);
 			prestamo.setFechaSolicitud(new Date());
 			prestamo.setUsuarioSolicita(usuario);
 			prestamo.setUsuarioAprueba(null);
@@ -124,12 +129,13 @@ public class PrestamosBL {
 			//Se inserta la solicitud
 			prestamoDAO.insertar(prestamo);						
 			
+			//A continuacion, se procede a registrar un item por cada uno de los dispositivos que el investigador quiere prestar
 			int tamLista=listIdEjemplares.size();
-			ListIterator<Integer> iter=listIdEjemplares.listIterator(tamLista);
 			
 			EjemplarDispositivo ejemplarDispositivo[]=new EjemplarDispositivo[tamLista];
 			ItemsPrestamo itemsPrestamo[]=new ItemsPrestamo[tamLista];
 			int cont=0;
+			
 			for (Integer object: listIdEjemplares) {
 				//Creo instancia de un ejemplar de dispositivos
 				ejemplarDispositivo[cont]=new EjemplarDispositivo();
@@ -161,8 +167,8 @@ public class PrestamosBL {
 	}
 	
 	/**
-	 * 
-	 * @param id del prestamo 
+	 * RFN9 - Metodo para comprobar que se hace uso del prestamo
+	 * @param id Campo con el numero identificador del prestamo 
 	 * @return retorno verdadero en caso de que el procedimiento se haya ejecutado con exito
 	 * @throws ExcepcionPrestamos ocurre cuando hay algun inconveniente en las transacciones
 	 */
@@ -192,7 +198,7 @@ public class PrestamosBL {
 	
 	/**
 	 * RFN10 - Comprobar devolución del dispositivos
-	 * @param id del prestamo 
+	 * @param id Campo con el numero identificador del prestamo
 	 * @return retorno verdadero en caso de que el procedimiento se haya ejecutado con exito
 	 * @throws ExcepcionPrestamos ocurre cuando hay algun inconveniente en las transacciones
 	 */
@@ -213,7 +219,7 @@ public class PrestamosBL {
 				EstadoDispositivo estadoDispositivo=new EstadoDispositivo();
 				
 				//modifico el estado del dispositivo
-				estadoDispositivo.setCodEstadoD(1);
+				estadoDispositivo.setCodEstadoD(4);
 				
 				//le seteo el nuevo estado al ejemplar
 				objects.getEjemplar().setEstado(estadoDispositivo);
