@@ -29,7 +29,7 @@ public class UsuarioBLTest
 		try
 		{
 			// El resultado de la prueba dependera del resultado del metodo esUsuarioValido de la clase UsuarioBL
-			assertTrue(userBL.esUsuarioValido("1", "fcea920f7412b5da7be0cf42b8c93759"));
+			assertTrue(userBL.esUsuarioValido("1", "fcea920f7412b5da7be0cf42b8c93759")); // Se verifica que el usuario con dicho pass si exista en el sistema
 		}
 		catch(ExcepcionPrestamos e) // En caso de error
 		{
@@ -45,8 +45,8 @@ public class UsuarioBLTest
 		try
 		{
 			// El resultado de la prueba dependera del resultado del metodo esUsuarioValido de la clase UsuarioBL
-			userBL.cambiarEstadoUsuario("3", 2);
-			userBL.cambiarEstadoUsuario("3", 1);
+			userBL.cambiarEstadoUsuario("3", 2); // Se cambia el estado del usuario 3 a 2->Sancionado
+			userBL.cambiarEstadoUsuario("3", 1); // Se revierte el cambio
 		}
 		catch(ExcepcionPrestamos e) // En caso de error
 		{

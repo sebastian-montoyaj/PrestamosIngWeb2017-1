@@ -2,7 +2,6 @@ package co.edu.udea.prestamos.bl;
 
 //Importes necesarios para la clase
 import org.springframework.transaction.annotation.Transactional;
-
 import co.edu.udea.prestamos.dao.interfaces.EstadoUsuarioDAO;
 import co.edu.udea.prestamos.dao.interfaces.UsuarioDAO;
 import co.edu.udea.prestamos.dto.EstadoUsuario;

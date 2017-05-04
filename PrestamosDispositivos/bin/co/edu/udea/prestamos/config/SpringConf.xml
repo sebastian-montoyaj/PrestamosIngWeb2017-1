@@ -100,7 +100,14 @@
 		<property name="estadoUsuarioDAO" ref="EstadoUsuarioDAO"></property>
 	</bean>
 	
-	
+	<bean id="administradorBL" class="co.edu.udea.prestamos.bl.AdministradorBL">
+		<property name="prestamoDAO" ref="PrestamoDAO"></property>
+		<property name="estadoPrestamoDAO" ref="EstadoPrestamoDAO"></property>
+		<property name="dispositivoDAO" ref="DispositivoDAO"></property>
+		<property name="tipoDispositivoDAO" ref="TipoDispositivoDAO"></property>
+		<property name="estadoDispositivoDAO" ref="EstadoDispositivoDAO"></property>
+		<property name="ejemplarDispositivoDAO" ref="EjemplarDispositivoDAO"></property>
+	</bean>
 	
 	
 	
