@@ -103,4 +103,10 @@
 		<property name="ejemplarDispositivoDAO" ref="EjemplarDispositivoDAO" />
 	</bean>
 	
+	<!-- Por otra parte, los siguientes beans seran los responsables de enlazar las clases de logica del negocio con los DAO del sistema -->
+	<bean id="usuarioBL" class="co.edu.udea.prestamos.bl.UsuarioBL">
+		<property name="userDAO" ref="UsuarioDAO"></property>
+		<property name="estadoUsuarioDAO" ref="EstadoUsuarioDAO"></property>
+	</bean>
+	
 </beans>
