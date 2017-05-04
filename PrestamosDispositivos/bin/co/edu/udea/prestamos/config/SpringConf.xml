@@ -109,6 +109,12 @@
 		<property name="ejemplarDispositivoDAO" ref="EjemplarDispositivoDAO"></property>
 	</bean>
 	
-	
+	<bean id="PrestamosBL" class="co.edu.udea.prestamos.bl.PrestamosBL">		
+		<property name="prestamoDAO" ref="PrestamoDAO" />
+		<property name="usuarioDAOImpl" ref="UsuarioDAO" />
+		<property name="estadoPrestamoDAO" ref="EstadoPrestamoDAO" />
+		<property name="itemsPrestamoDAO" ref="ItemsPrestamoDAO" />
+		<property name="ejemplarDispositivoDAO" ref="EjemplarDispositivoDAO" />
+	</bean>
 	
 </beans>
