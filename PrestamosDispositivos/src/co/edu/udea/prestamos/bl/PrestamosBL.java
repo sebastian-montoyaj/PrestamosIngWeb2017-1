@@ -12,6 +12,7 @@ import co.edu.udea.prestamos.dao.interfaces.ItemsPrestamoDAO;
 import co.edu.udea.prestamos.dao.interfaces.PrestamoDAO;
 import co.edu.udea.prestamos.dto.Dispositivo;
 import co.edu.udea.prestamos.dto.EjemplarDispositivo;
+import co.edu.udea.prestamos.dto.EstadoDispositivo;
 import co.edu.udea.prestamos.dto.EstadoPrestamo;
 import co.edu.udea.prestamos.dto.ItemsPrestamo;
 import co.edu.udea.prestamos.dto.Prestamo;
@@ -75,7 +76,15 @@ public class PrestamosBL {
 	public void setEjemplarDispositivoDAO(EjemplarDispositivoDAO ejemplarDispositivoDAO) {
 		this.ejemplarDispositivoDAO = ejemplarDispositivoDAO;
 	}
-
+	
+	/**
+	 * 
+	 * @param idPrestamo
+	 * @param idUsuario
+	 * @param listIdEjemplares
+	 * @return
+	 * @throws ExcepcionPrestamos
+	 */
 	public boolean solicitud(int idPrestamo,int idUsuario,List<Integer>listIdEjemplares) throws ExcepcionPrestamos{
 		Prestamo prestamo=new Prestamo();
 		EstadoPrestamo estado=new EstadoPrestamo();
@@ -151,6 +160,12 @@ public class PrestamosBL {
 		
 	}
 	
+	/**
+	 * 
+	 * @param id del prestamo 
+	 * @return retorno verdadero en caso de que el procedimiento se haya ejecutado con exito
+	 * @throws ExcepcionPrestamos ocurre cuando hay algun inconveniente en las transacciones
+	 */
 	public boolean comprobarEntrega(int id) throws ExcepcionPrestamos{
 		try{
 			Prestamo prestamo=new Prestamo();
@@ -175,13 +190,37 @@ public class PrestamosBL {
 		}
 	}
 	
+	/**
+	 * RFN10 - Comprobar devolución del dispositivos
+	 * @param id del prestamo 
+	 * @return retorno verdadero en caso de que el procedimiento se haya ejecutado con exito
+	 * @throws ExcepcionPrestamos ocurre cuando hay algun inconveniente en las transacciones
+	 */
 	public boolean comprobarDevolucion(int id) throws ExcepcionPrestamos{
 		try{
 			Prestamo prestamo=new Prestamo();
 			EstadoPrestamo estadoPrestamo=new EstadoPrestamo();
+			List<ItemsPrestamo> itemsPrestamo=new ArrayList<ItemsPrestamo>();
 			
 			//Obtengo el prestamo por su id
 			prestamo=prestamoDAO.obtener(id);
+			
+			//Obtengo los ejemplares pertenecientes al prestamo
+			itemsPrestamo=itemsPrestamoDAO.obtenerEjemplares(prestamo.getIdPrestamo());
+			
+			for(ItemsPrestamo objects:itemsPrestamo){
+				//Creo una instancia de un estado de dispositivo
+				EstadoDispositivo estadoDispositivo=new EstadoDispositivo();
+				
+				//modifico el estado del dispositivo
+				estadoDispositivo.setCodEstadoD(1);
+				
+				//le seteo el nuevo estado al ejemplar
+				objects.getEjemplar().setEstado(estadoDispositivo);
+				
+				//Actualizo los item con su nuevo estado 
+				ejemplarDispositivoDAO.actualizar(objects.getEjemplar());
+			}
 			
 			//Establesco la fecha de entrega del prestamo
 			prestamo.setFechaEntrega(new Date());

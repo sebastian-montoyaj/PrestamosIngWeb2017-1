@@ -7,10 +7,12 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 
 import co.edu.udea.prestamos.dao.interfaces.ItemsPrestamoDAO;
 import co.edu.udea.prestamos.dto.EstadoUsuario;
 import co.edu.udea.prestamos.dto.ItemsPrestamo;
+import co.edu.udea.prestamos.dto.Prestamo;
 import co.edu.udea.prestamos.excepcion.ExcepcionPrestamos;
 
 /**
@@ -119,7 +121,28 @@ public class ItemsPrestamoDAOImpl implements ItemsPrestamoDAO
 		}
 		
 	}
-	
+
+	@Override
+	public List<ItemsPrestamo> obtenerEjemplares(int idPrestamo) throws ExcepcionPrestamos {
+		List<ItemsPrestamo> listaItemsPrestamo=  new ArrayList<ItemsPrestamo>(); // Variable con la que vamos a recibir la lista de esatados de usuarios definidos en el sistema
+		Session session = null; // Variable con la que se establecera la conexion con la BD
+		
+		try
+		{
+			session = sessionFactory.getCurrentSession(); // Se inicia(obtiene) la sesion
+			Prestamo prestamo=new Prestamo();
+			prestamo.setIdPrestamo(idPrestamo);					
+			Criteria criteria = session.createCriteria(ItemsPrestamo.class)
+					.add(Restrictions.eq("prestamo",prestamo)); // Se crea un criterio en donde traeremos todos los ejemplares relacionados al prestamo
+			listaItemsPrestamo = criteria.list(); // Y luego llevamos el resultado de la consulta a la lista creada anteriormente
+		}
+		catch(HibernateException e) // En caso de error recuperamos el error y lanzamos la excepcion
+		{
+			throw new ExcepcionPrestamos("Error consultando los ejemplares referente al prestamo del sistema!", e);
+		}
+		
+		return listaItemsPrestamo; // Por ultimo, retornamos la lista vacia o de roles que recuperamos de la BD
+	}	
 	
 	
 }
