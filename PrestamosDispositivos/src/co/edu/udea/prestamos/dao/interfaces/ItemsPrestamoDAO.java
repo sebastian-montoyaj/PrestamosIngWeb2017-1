@@ -28,6 +28,14 @@ public interface ItemsPrestamoDAO
 	public ItemsPrestamo obtener(int codigo) throws ExcepcionPrestamos;
 	
 	/**
+	 * Obtiene la informacion de todos los ejemplares solicitados en el prestamo
+	 * @param idPrestamo id de la solicitud del prestamo
+	 * @return Lista de items de prestamo definidos en el sistema
+	 * @throws ExcepcionPrestamos
+	 */
+	public List<ItemsPrestamo> obtenerEjemplares(int idPrestamo) throws ExcepcionPrestamos;
+	
+	/**
 	 * Guarda la informacion de un nuevo item de prestamo en la base de datos
 	 * @param item Objeto {@link ItemsPrestamo} que se desea almacenar en la base de datos
 	 * @throws ExcepcionPrestamos Ocurre cuando se presenta un error al insertar

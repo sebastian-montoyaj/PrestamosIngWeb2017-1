@@ -71,7 +71,7 @@ public class PrestamosBLTest {
 	 * Comprobar la devolucion de los dispositivos por el "id" del prestamo
 	 */
 	@Test
-	public void testComprobarDevolcuion(){		
+	public void testComprobarDevolucion(){		
 		try{
 			assertTrue(prestamoBL.comprobarEntrega(1));			
  		}

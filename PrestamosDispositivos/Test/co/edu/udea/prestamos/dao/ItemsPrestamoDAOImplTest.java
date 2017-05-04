@@ -124,6 +124,25 @@ public class ItemsPrestamoDAOImplTest {
 			//e.printStackTrace(); // En caso que se desee ver la traza completa de error se descomenta esta linea. Aunque no es una buena practica.
 		}
 	}
+	
+	@Test
+	public void testObtenerEjemplares()
+	{
+		List<ItemsPrestamo> listaPrestamo = null; // Creo un objeto lista para recibir el reultado de la consulta (De momento sera nulo)
+		
+		try
+		{
+			listaPrestamo = itemsPrestamoDAO.obtenerEjemplares(1); // Ahora, inicializo la lista previa a partir del resultado del metodo que deseo evaluar
+			assertTrue(listaPrestamo.size() > 0); // Se considerara correcto el metodo si hay por lo menos un elemento 
+		}
+		catch(Exception e)
+		{
+			fail(e.getMessage()); // En caso de error recupero el mensaje y se considera la prueba como fallida
+			//e.printStackTrace(); // En caso que se desee ver la traza completa de error se descomenta esta linea. Aunque no es una buena practica.
+		}
+	}
+	
+	
 
 
 }
