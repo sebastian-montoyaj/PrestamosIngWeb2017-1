@@ -117,4 +117,10 @@
 		<property name="ejemplarDispositivoDAO" ref="EjemplarDispositivoDAO" />
 	</bean>
 	
+	<!-- Con este atributo es para decirle a Spring que se van a realizar transacciones y hacia quien -->
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+	<!-- Aqui se coloca la ruta en donde estan los servicios web -->
+	<context:component-scan base-package="co.edu.udea.prestamos.ws"></context:component-scan>
+	
 </beans>
