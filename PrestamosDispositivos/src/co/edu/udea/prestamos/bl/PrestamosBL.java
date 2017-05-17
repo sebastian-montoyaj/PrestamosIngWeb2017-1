@@ -89,7 +89,7 @@ public class PrestamosBL
 	 * @return Valor logico que permite conocer el resultado de la operacion
 	 * @throws ExcepcionPrestamos Ocurre cuando el usuario no es valido o se presento un error al insertar
 	 */
-	public boolean solicitud(int idUsuario, List<Integer>listIdEjemplares) throws ExcepcionPrestamos
+	public boolean solicitud(int idUsuario, List<Integer>listIdEjemplares,Date fechaPrestamo) throws ExcepcionPrestamos
 	{
 		// Creo los objetos necesarios para el metodo
 		Prestamo prestamo = new Prestamo();
@@ -100,7 +100,7 @@ public class PrestamosBL
 		try{
 			//Se trae la informacion del usuario que realiza la solicitud por su ID
 			usuario=usuarioDAOImpl.obtener(idUsuario);
-			
+			System.out.println(usuario);
 			if(usuario==null){
 				throw new ExcepcionPrestamos("Usuario que realiza la solicitud no valido");
 			}
@@ -122,12 +122,25 @@ public class PrestamosBL
 			prestamo.setFechaSolicitud(new Date());
 			prestamo.setUsuarioSolicita(usuario);
 			prestamo.setUsuarioAprueba(null);
-			prestamo.setFechaPrestamo(null);
+			prestamo.setFechaPrestamo(fechaPrestamo);
 			prestamo.setFechaEntrega(null);
 			prestamo.setEstado(estado);
 			
 			//Se inserta la solicitud
-			prestamoDAO.insertar(prestamo);						
+			prestamoDAO.insertar(prestamo);	
+			
+			
+			System.out.println("prueba id :"+prestamoDAO.ultimoID());			
+			
+			//Hago copia del prestamo con el identificador correspondiente a la ultima insercion, se hace porque no se puede modificar el id del anterior por sale excepcion de hiberne
+			Prestamo prestamoAux=new Prestamo();
+			prestamoAux.setIdPrestamo(prestamoDAO.ultimoID());
+			prestamoAux.setFechaSolicitud(new Date());
+			prestamoAux.setUsuarioSolicita(usuario);
+			prestamoAux.setUsuarioAprueba(null);
+			prestamoAux.setFechaPrestamo(fechaPrestamo);
+			prestamoAux.setFechaEntrega(null);
+			prestamoAux.setEstado(estado);
 			
 			//A continuacion, se procede a registrar un item por cada uno de los dispositivos que el investigador quiere prestar
 			int tamLista=listIdEjemplares.size();
@@ -141,13 +154,13 @@ public class PrestamosBL
 				ejemplarDispositivo[cont]=new EjemplarDispositivo();
 				
 				//Obtengo la informacion del ejemplar
-				ejemplarDispositivo[cont]=ejemplarDispositivoDAO.obtener(object.intValue());
+				ejemplarDispositivo[cont]=ejemplarDispositivoDAO.obtener(object.intValue());				
 				
 				//Creo instancia de un item del prestamo
 				itemsPrestamo[cont]=new ItemsPrestamo();
 				
 				//Le seteo su prestamo correspondiente
-				itemsPrestamo[cont].setPrestamo(prestamo);
+				itemsPrestamo[cont].setPrestamo(prestamoAux);
 				
 				//Le seteo el ejemplear correspondiente
 				itemsPrestamo[cont].setEjemplar(ejemplarDispositivo[cont]);

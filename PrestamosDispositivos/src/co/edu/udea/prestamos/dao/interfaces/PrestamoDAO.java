@@ -47,4 +47,11 @@ public interface PrestamoDAO
 	 * @throws ExcepcionPrestamos Ocurre cuando se presenta un error al eliminar
 	 */
 	public void eliminar(Prestamo prestamo) throws ExcepcionPrestamos;
+	
+	/**
+	 * 
+	 * @return identificador del maximo id
+	 * @throws ExcepcionPrestamos
+	 */
+	public int ultimoID() throws ExcepcionPrestamos;
 }
