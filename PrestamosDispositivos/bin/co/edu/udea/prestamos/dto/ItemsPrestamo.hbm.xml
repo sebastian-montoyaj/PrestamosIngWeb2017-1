@@ -4,7 +4,7 @@
 <!-- Generated 2/05/2017 01:33:28 PM by Hibernate Tools 3.5.0.Final -->
 <hibernate-mapping>
 	<!--  Mapeo de la tabla ItemsPrestamo -->
-    <class name="co.edu.udea.prestamos.dto.ItemsPrestamo" table="ITEMSPRESTAMO">
+    <class name="co.edu.udea.prestamos.dto.ItemsPrestamo" table="ItemsPrestamo">
     
         <id name="idItem" type="int">
             <column name="IDITEM" precision="11"/>

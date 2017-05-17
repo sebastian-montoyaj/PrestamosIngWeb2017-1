@@ -29,7 +29,7 @@ public class UsuarioBLTest
 		try
 		{
 			// El resultado de la prueba dependera del resultado del metodo esUsuarioValido de la clase UsuarioBL
-			assertTrue(userBL.esUsuarioValido("1", "fcea920f7412b5da7be0cf42b8c93759")); // Se verifica que el usuario con dicho pass si exista en el sistema
+			assertTrue(userBL.esUsuarioValido("1", "1234567")); // Se verifica que el usuario con dicho pass si exista en el sistema
 		}
 		catch(ExcepcionPrestamos e) // En caso de error
 		{

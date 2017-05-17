@@ -1,6 +1,8 @@
 package co.edu.udea.prestamos.bl;
 
 //Importes necesarios para la clase
+import java.math.BigInteger;
+import java.security.MessageDigest;
 import org.springframework.transaction.annotation.Transactional;
 import co.edu.udea.prestamos.dao.interfaces.EstadoUsuarioDAO;
 import co.edu.udea.prestamos.dao.interfaces.UsuarioDAO;
@@ -59,6 +61,9 @@ public class UsuarioBL
 		{
 			throw new ExcepcionPrestamos("Usuario y contraseña incorrectos!");
 		}
+		
+		// Luego, codificamos la clave bajo formato md5
+		String passwordCodificada = calcularMD5(password);
 				
 		// Ahora, creamos un objeto usuario que se inicializa con el resultado de la busqueda de tal usuario
 		Usuario user = userDAO.obtener(Integer.parseInt(identificador));
@@ -70,7 +75,7 @@ public class UsuarioBL
 		}
 		
 		// Si el usuario dado correponde con uno de la base de datos entonces pasamos a comprobar que la contraseña sea correcta, sino lo es entonces tampoco es valido
-		if (!user.getClave().equals(password))
+		if (!user.getClave().equals(passwordCodificada))
 		{
 			return false;
 		}
@@ -106,4 +111,32 @@ public class UsuarioBL
 			throw new ExcepcionPrestamos("Error cambiando el estado de usuario!", e);
 		}
 	}
+	
+	/**
+     * Metodo para codificar cualquier clave (o hilera de caracteres) en una clave hash usando el algoritmo MD5
+     * @param entradaSinCodificar Campo con la clave sin codificar
+     * @return Clave codificada que tiene una longitud de 32 caracteres
+     */
+    public static String calcularMD5(String entradaSinCodificar)
+    {
+        try
+        {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] messageDigest = md.digest(entradaSinCodificar.getBytes());
+            BigInteger number = new BigInteger(1, messageDigest);
+            String salidaCodificada = number.toString(16);
+            
+            // Now we need to zero pad it if you actually want the full 32 chars.
+            while (salidaCodificada.length() < 32)
+            {
+                salidaCodificada = "0" + salidaCodificada;
+            }
+            
+            return salidaCodificada;
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -4,7 +4,7 @@
 <!-- Generated 2/05/2017 01:33:28 PM by Hibernate Tools 3.5.0.Final -->
 <hibernate-mapping>
 	<!--  Mapeo de la tabla Dispositivo -->
-    <class name="co.edu.udea.prestamos.dto.Dispositivo" table="DISPOSITIVO">
+    <class name="co.edu.udea.prestamos.dto.Dispositivo" table="Dispositivo">
     
         <id name="idDispositivo" type="int">
             <column name="IDDISPOSITIVO" precision="11"/>

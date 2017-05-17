@@ -4,7 +4,7 @@
 <!-- Generated 2/05/2017 01:33:28 PM by Hibernate Tools 3.5.0.Final -->
 <hibernate-mapping>
 	<!--  Mapeo de la tabla Sanciones -->
-    <class name="co.edu.udea.prestamos.dto.Sancion" table="SANCIONES">
+    <class name="co.edu.udea.prestamos.dto.Sancion" table="Sanciones">
     
         <id name="idSancion" type="int">
             <column name="IDSANCION" precision="11"/>
