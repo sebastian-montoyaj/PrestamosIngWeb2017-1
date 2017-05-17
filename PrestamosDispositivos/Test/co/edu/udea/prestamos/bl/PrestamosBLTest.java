@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,7 +43,7 @@ public class PrestamosBLTest {
  			//Agrego dos ejemplares para registrar en la solicitud
  			listIdEjemplares.add(1);
  			
-			assertTrue(prestamoBL.solicitud(1, listIdEjemplares));
+			assertTrue(prestamoBL.solicitud(1, listIdEjemplares,new Date()));
 			
  		}
  		catch(Exception e){

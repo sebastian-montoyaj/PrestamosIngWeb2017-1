@@ -20,7 +20,7 @@
         </many-to-one>
         
         <many-to-one name="usuarioAprueba" class="co.edu.udea.prestamos.dto.Usuario" fetch="join">
-            <column name="USUARIOAPRUEBA" not-null="true"/>
+            <column name="USUARIOAPRUEBA" not-null="false"/>
         </many-to-one>
         
         <property name="fechaPrestamo" type="java.util.Date">

@@ -7,6 +7,9 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 
 import co.edu.udea.prestamos.dao.interfaces.PrestamoDAO;
 import co.edu.udea.prestamos.dto.Prestamo;
@@ -42,7 +45,7 @@ public class PrestamoDAOImpl implements PrestamoDAO
 		try
 		{
 			session = sessionFactory.getCurrentSession(); // Se inicia(obtiene) la sesion
-			Criteria criteria = session.createCriteria(Prestamo.class); // Se crea un criterio en donde traeremos todos los roles
+			Criteria criteria = session.createCriteria(Prestamo.class); // Se crea un criterio en donde traeremos todos los prestamos
 			listaPrestamo = criteria.list(); // Y luego llevamos el resultado de la consulta a la lista creada anteriormente
 		}
 		catch(HibernateException e) // En caso de error recuperamos el error y lanzamos la excepcion
@@ -78,7 +81,7 @@ public class PrestamoDAOImpl implements PrestamoDAO
 		try
 		{
 			session = sessionFactory.getCurrentSession(); // Se inicia la sesion
-			session.save(prestamo); // Se guarda el estado de usuario en la BD
+			session.save(prestamo); // Se guarda la solicitud de prestamo en la BD			
 		}
 		catch (HibernateException e) // En caso de error recuperamos el error y lanzamos la excepcion
 		{
@@ -86,7 +89,7 @@ public class PrestamoDAOImpl implements PrestamoDAO
 		}		
 	}
 
-	@Override
+	
 	public void actualizar(Prestamo prestamo) throws ExcepcionPrestamos {
 		Session session = null; // Variable con la que se establecera la conexion con la BD
 		
@@ -116,4 +119,21 @@ public class PrestamoDAOImpl implements PrestamoDAO
 		}		
 	}
 	
+	@Override
+	public int ultimoID() throws ExcepcionPrestamos{
+		Session session = null; // Variable con la que se establecera la conexion con la BD
+		try
+		{
+			session = sessionFactory.getCurrentSession(); // Se inicia la sesion			
+			Criteria criteria=session.createCriteria(Prestamo.class)
+					.setProjection(Projections.projectionList()
+							.add(Projections.max("idPrestamo"),"idPrestamo"));
+			List<Integer> results=criteria.list();
+			return (int)results.get(0);		
+		}
+		catch (HibernateException e) // En caso de error recuperamos el error y lanzamos la excepcion
+		{
+			throw new ExcepcionPrestamos("Error insertando el prestamo!", e);
+		}
+	}
 }
