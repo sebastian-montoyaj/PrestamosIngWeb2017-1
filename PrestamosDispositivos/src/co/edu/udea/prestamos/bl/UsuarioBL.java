@@ -126,7 +126,7 @@ public class UsuarioBL
             BigInteger number = new BigInteger(1, messageDigest);
             String salidaCodificada = number.toString(16);
             
-            // Now we need to zero pad it if you actually want the full 32 chars.
+            // Se rellena con ceros a la izquierda si la clave es menor de 32 digitos
             while (salidaCodificada.length() < 32)
             {
                 salidaCodificada = "0" + salidaCodificada;
