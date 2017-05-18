@@ -8,7 +8,7 @@
     
         <id name="idItem" type="int">
             <column name="IDITEM" precision="11"/>
-            <generator class="assigned" />
+            <generator class="increment" />
         </id>
         
         <many-to-one name="prestamo" class="co.edu.udea.prestamos.dto.Prestamo" fetch="join">

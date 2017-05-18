@@ -25,23 +25,35 @@ public class PrestamosWS {
 	@Autowired
 	PrestamosBL prestamoBL;
 	
-	@GET
-	@Produces(MediaType.TEXT_HTML)
-	public String solicitud(@QueryParam("idUser")int idUser,@QueryParam("listaEjemplares")String strListaEjemplares) throws RemoteException
+	@POST
+	@Path("solicitud")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String solicitud(@QueryParam("idUser")String idUser,@QueryParam("listaEjemplares")String strListaEjemplares) throws RemoteException
 	{
 		try{
-			//int idUsuario, List<Integer>listIdEjemplares
+			int auxIdUser=Integer.parseInt(idUser);
 			List<Integer>listIdEjemplares=new ArrayList<Integer>();
-			listIdEjemplares.add(1);
-			//listIdEjemplares.add(2);
-			//String ejemplares=strListaEjemplares.split(",");
+			String aux[]=strListaEjemplares.split("-");
+			for(int i=0;i<aux.length;i++){
+				listIdEjemplares.add(Integer.parseInt(aux[i]));
+			}
 			
-			prestamoBL.solicitud(1, listIdEjemplares,new Date());
+			boolean result=prestamoBL.solicitud(auxIdUser, listIdEjemplares,new Date());
 			
-			return "GET Buenas tardes "+idUser+" lista: "+strListaEjemplares;
+			if(result)
+				return "{estado:true,msj:'Solicitud realizada correctamente'}";
+			else
+				return "{estado:false,msj:'No fue posible realizar la solicitud'}";
+			
+		}
+		catch(NumberFormatException e){
+			return "{estado:false,msj:'Error validando parametros'}";
 		}
 		catch (ExcepcionPrestamos e) {
-			throw new RemoteException("error guardando el usuario",e);
+			return "{estado:false,msj:'"+e.getMessage()+"'}";
+		}
+		catch(Exception e){
+			return "{estado:false,msj:'"+e.getMessage()+"'}";
 		}
 	}
 	
@@ -51,7 +63,7 @@ public class PrestamosWS {
 	 * @return string en formato JSON con un estado y msj correspondiente para devolver al cliente que se consume el servicio
 	 * @throws RemoteException Ocurre cuando se tuvo un problema en la transaccion contra la BD
 	 */
-	@GET
+	@POST
 	@Path("comprobarEntrega")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String comprobarEntrega(@QueryParam("idPrestamo")String idPrestamo) throws RemoteException
@@ -69,19 +81,22 @@ public class PrestamosWS {
 			//throw new RemoteException("Error comprobando la entrega de los ejemplares",e);
 			return "{estado:false,msj:'"+e.getMessage()+"'}";
 		}
-		catch(Exception e){
+		catch(NumberFormatException e){
 			return "{estado:false,msj:'Error validando parametros'}";
+		}
+		catch(Exception e){
+			return "{estado:false,msj:'"+e.getMessage()+"'}";
 			//throw new Exception("Error validando parametros",e);
 		}		
 	}
 	
 	/**
 	 * 
-	 * @param idPrestamo identificador del prestamo al cual se le cambiara el estado de los ejemplares a "DISPONIBLES" y el estado del prestado a "CADUCADO" 
+	 * @param idPrestamo identificador del prestamo al cual se le cambiara el estado de los ejemplares a "DISPONIBLES" y el estado del prestamo a "CADUCADO" 
 	 * @return string en formato JSON con un estado y msj correspondiente para devolver al cliente que se consume el servicio
 	 * @throws RemoteException Ocurre cuando se tuvo un problema en la transaccion contra la BD
 	 */
-	@GET
+	@POST
 	@Path("comprobarDevolucion")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String comprobarDevolucion(@QueryParam("idPrestamo")String idPrestamo) throws RemoteException

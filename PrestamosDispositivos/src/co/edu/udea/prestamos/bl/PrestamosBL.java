@@ -36,9 +36,10 @@ public class PrestamosBL
 	private EstadoPrestamoDAO estadoPrestamoDAO;
 	private ItemsPrestamoDAO itemsPrestamoDAO;
 	private EjemplarDispositivoDAO ejemplarDispositivoDAO;
-	private static final int CODROLINVESTIGADOR=2;
+	private static final int COD_ROL_INVESTIGADOR=2;
 	private static final int CODESTADOPRESTADO=5;
 	private static final int COD_ESTADO_DISPOSITIVO_DISPONIBLE=1;
+	private static final int COD_ESTADO_DISPOSITIVO_PRESTADO=4;
 	private static final int COD_ESTADO_PRESTAMO_CADUCADO=4;
 	
 	// Metodos getter/setter para las variables que requiere esta clase
@@ -104,7 +105,7 @@ public class PrestamosBL
 		try{
 			//Se trae la informacion del usuario que realiza la solicitud por su ID
 			usuario=usuarioDAOImpl.obtener(idUsuario);
-			
+			System.out.println("id USUARIO: "+idUsuario);
 			if(usuario==null){
 				throw new ExcepcionPrestamos("Usuario que realiza la solicitud no valido");
 			}
@@ -115,8 +116,9 @@ public class PrestamosBL
 			}
 			
 			//Se valida que el usuario crea tenga rol de investigador
-			if(usuario.getEstado().getCodEstadoU()==CODROLINVESTIGADOR){
-				throw new ExcepcionPrestamos("Usuario que realiza la solicitud no esta habilitado para realizar la solicitud");
+			System.out.println("CODROL"+usuario.getRol().getCodRol());
+			if(usuario.getRol().getCodRol()!=COD_ROL_INVESTIGADOR){
+				throw new ExcepcionPrestamos("Usuario que realiza la solicitud no tiene el ROL para realizar la solicitud");
 			}
 			
 			//Se valida que hayan mas de un dispositivo para solicitar el prestamo
@@ -136,79 +138,42 @@ public class PrestamosBL
 			prestamo.setEstado(estado);
 			
 			//Se inserta la solicitud
-			prestamoDAO.insertar(prestamo);	
+			prestamoDAO.insertar(prestamo);										
 			
-			
-			System.out.println("prueba id :"+prestamoDAO.ultimoID());			
-			
-			//Hago copia del prestamo con el identificador correspondiente a la ultima insercion, se hace porque no se puede modificar el id del anterior por sale excepcion de hiberne
+			//Hago copia del prestamo con el identificador correspondiente a la ultima insercion, se hace porque no se puede modificar el id del anterior porque sale excepcion de hiberne
+			int idPrestamo=prestamoDAO.ultimoID();
 			Prestamo prestamoAux=new Prestamo();
-			prestamoAux.setIdPrestamo(prestamoDAO.ultimoID());
-			prestamoAux.setFechaSolicitud(new Date());
-			prestamoAux.setUsuarioSolicita(usuario);
-			prestamoAux.setUsuarioAprueba(null);
-			prestamoAux.setFechaPrestamo(fechaPrestamo);
-			prestamoAux.setFechaEntrega(null);
-			prestamoAux.setEstado(estado);
-			
+			prestamoAux.setIdPrestamo(idPrestamo);
+						
 			//A continuacion, se procede a registrar un item por cada uno de los dispositivos que el investigador quiere prestar
 			int tamLista=listIdEjemplares.size();
 			
 			EjemplarDispositivo ejemplarDispositivo;
-			ItemsPrestamo itemsPrestamo=new ItemsPrestamo();
+			ItemsPrestamo itemsPrestamo;//=new ItemsPrestamo();
 			int cont=0;
 			
-			for (Integer object: listIdEjemplares) {
-				//Creo instancia de un ejemplar de dispositivos
-				ejemplarDispositivo=new EjemplarDispositivo();
-				
+			for (Integer object: listIdEjemplares) {				
 				//Obtengo la informacion del ejemplar
 				ejemplarDispositivo=ejemplarDispositivoDAO.obtener(object.intValue());				
 				
 				//Creo instancia de un item del prestamo
 				itemsPrestamo=new ItemsPrestamo();
-				
+								
 				//Le seteo su prestamo correspondiente
 				itemsPrestamo.setPrestamo(prestamoAux);
 				
 				//Le seteo el ejemplear correspondiente
 				itemsPrestamo.setEjemplar(ejemplarDispositivo);
-				System.out.println(ejemplarDispositivo.getIdEjemplar());
-				//Inserto el item al prestamo correspondiente
-				//itemsPrestamoDAO.insertar(itemsPrestamo);
-			    			    
-			}
-			/*
-			EjemplarDispositivo ejemplarDispositivo[]=new EjemplarDispositivo[tamLista];
-			ItemsPrestamo itemsPrestamo[]=new ItemsPrestamo[tamLista];
-			int cont=0;
-			
-			for (Integer object: listIdEjemplares) {
-				//Creo instancia de un ejemplar de dispositivos
-				ejemplarDispositivo[cont]=new EjemplarDispositivo();
-				
-				//Obtengo la informacion del ejemplar
-				ejemplarDispositivo[cont]=ejemplarDispositivoDAO.obtener(object.intValue());				
-				
-				//Creo instancia de un item del prestamo
-				itemsPrestamo[cont]=new ItemsPrestamo();
-				
-				//Le seteo su prestamo correspondiente
-				itemsPrestamo[cont].setPrestamo(prestamoAux);
-				
-				//Le seteo el ejemplear correspondiente
-				itemsPrestamo[cont].setEjemplar(ejemplarDispositivo[cont]);
 				
 				//Inserto el item al prestamo correspondiente
-				itemsPrestamoDAO.insertar(itemsPrestamo[cont]);
-			    
-			    cont++;
-			}*/		
+				itemsPrestamoDAO.insertar(itemsPrestamo);				
+			}			
 			
 			return true;
 		}
 		catch(ExcepcionPrestamos e){
-			throw new ExcepcionPrestamos("Error registrando la solicitud por favor vuelve a intentar",e);
+			//throw new ExcepcionPrestamos("Error registrando la solicitud por favor vuelve a intentar",e);
+			throw new ExcepcionPrestamos(e.getMessage(),e);
 		}
 		
 	}
@@ -223,9 +188,28 @@ public class PrestamosBL
 		try{
 			Prestamo prestamo=new Prestamo();
 			EstadoPrestamo estadoPrestamo=new EstadoPrestamo();
+			List<ItemsPrestamo> itemsPrestamo=new ArrayList<ItemsPrestamo>();
 			
 			//Obtengo el prestamo por su id
 			prestamo=prestamoDAO.obtener(id);
+			
+			//Obtengo los ejemplares pertenecientes al prestamo
+			itemsPrestamo=itemsPrestamoDAO.obtenerEjemplares(prestamo.getIdPrestamo());
+			
+			for(ItemsPrestamo objects:itemsPrestamo){
+				//Creo una instancia de un estado de dispositivo
+				EstadoDispositivo estadoDispositivo=new EstadoDispositivo();
+				
+				//modifico el estado del dispositivo a prestado
+				estadoDispositivo.setCodEstadoD(COD_ESTADO_DISPOSITIVO_PRESTADO);
+				
+				//le seteo el nuevo estado al ejemplar
+				objects.getEjemplar().setEstado(estadoDispositivo);
+				
+				//Actualizo los item con su nuevo estado 
+				ejemplarDispositivoDAO.actualizar(objects.getEjemplar());
+				
+			}
 			
 			//Obtengo el estado prestado parametrizado en la base de datos
 			estadoPrestamo=estadoPrestamoDAO.obtener(CODESTADOPRESTADO);
@@ -265,7 +249,7 @@ public class PrestamosBL
 				//Creo una instancia de un estado de dispositivo
 				EstadoDispositivo estadoDispositivo=new EstadoDispositivo();
 				
-				//modifico el estado del dispositivo
+				//modifico el estado del dispositivo a disponible
 				estadoDispositivo.setCodEstadoD(COD_ESTADO_DISPOSITIVO_DISPONIBLE);
 				
 				//le seteo el nuevo estado al ejemplar
@@ -273,7 +257,7 @@ public class PrestamosBL
 				
 				//Actualizo los item con su nuevo estado 
 				ejemplarDispositivoDAO.actualizar(objects.getEjemplar());
-				//if(1==1)break;
+				
 			}
 			
 			//Establesco la fecha de entrega del prestamo

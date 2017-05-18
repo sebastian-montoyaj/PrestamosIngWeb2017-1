@@ -82,6 +82,10 @@ public class ItemsPrestamoDAOImpl implements ItemsPrestamoDAO
 		{
 			session = sessionFactory.getCurrentSession(); // Se inicia la sesion
 			session.save(item); // Se guarda el items prestamo en la BD
+			session.flush();
+			
+			//session.clear();
+			//session.beginTransaction();
 		}
 		catch (HibernateException e) // En caso de error recuperamos el error y lanzamos la excepcion
 		{
