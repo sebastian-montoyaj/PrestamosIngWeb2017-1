@@ -42,6 +42,7 @@ public class PrestamosBLTest {
  			List<Integer> listIdEjemplares=new ArrayList<Integer>();
  			//Agrego dos ejemplares para registrar en la solicitud
  			listIdEjemplares.add(1);
+ 			//listIdEjemplares.add(3);
  			
 			assertTrue(prestamoBL.solicitud(1, listIdEjemplares,new Date()));
 			
@@ -73,7 +74,7 @@ public class PrestamosBLTest {
 	@Test
 	public void testComprobarDevolucion(){		
 		try{
-			assertTrue(prestamoBL.comprobarEntrega(1));			
+			assertTrue(prestamoBL.comprobarDevolucion(12));			
  		}
  		catch(Exception e){
  			e.printStackTrace();

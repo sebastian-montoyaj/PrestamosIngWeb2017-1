@@ -45,11 +45,65 @@ public class PrestamosWS {
 		}
 	}
 	
-	@POST
-	@Produces(MediaType.TEXT_HTML)
-	public String prestamo(@QueryParam("cedula")String cedula)
+	/**
+	 * 
+	 * @param idPrestamo identificador del prestamo al cual se le cambiara el estado a "PRESTADO"
+	 * @return string en formato JSON con un estado y msj correspondiente para devolver al cliente que se consume el servicio
+	 * @throws RemoteException Ocurre cuando se tuvo un problema en la transaccion contra la BD
+	 */
+	@GET
+	@Path("comprobarEntrega")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String comprobarEntrega(@QueryParam("idPrestamo")String idPrestamo) throws RemoteException
 	{
-		return "POST Buenas tardes "+cedula;
+		try{						
+			int auxIdPrestamo=Integer.parseInt(idPrestamo);
+			boolean result=prestamoBL.comprobarEntrega(auxIdPrestamo);
+			if(result)
+				return "{estado:true,msj:'Comprobación exitosa'}";
+			else
+				return "{estado:false,msj:'No fue posible comprobar la entrega de los ejemplares'}";
+			
+		}
+		catch (ExcepcionPrestamos e) {
+			//throw new RemoteException("Error comprobando la entrega de los ejemplares",e);
+			return "{estado:false,msj:'"+e.getMessage()+"'}";
+		}
+		catch(Exception e){
+			return "{estado:false,msj:'Error validando parametros'}";
+			//throw new Exception("Error validando parametros",e);
+		}		
+	}
+	
+	/**
+	 * 
+	 * @param idPrestamo identificador del prestamo al cual se le cambiara el estado de los ejemplares a "DISPONIBLES" y el estado del prestado a "CADUCADO" 
+	 * @return string en formato JSON con un estado y msj correspondiente para devolver al cliente que se consume el servicio
+	 * @throws RemoteException Ocurre cuando se tuvo un problema en la transaccion contra la BD
+	 */
+	@GET
+	@Path("comprobarDevolucion")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String comprobarDevolucion(@QueryParam("idPrestamo")String idPrestamo) throws RemoteException
+	{
+		try{						
+			int auxIdPrestamo=Integer.parseInt(idPrestamo);
+			boolean result=prestamoBL.comprobarDevolucion(auxIdPrestamo);
+			if(result)
+				return "{estado:true,msj:'Comprobación de devolucion exitosa'}";
+			else
+				return "{estado:false,msj:'No fue posible comprobar la devolucion del prestamo'}";
+			
+		}
+		catch (ExcepcionPrestamos e) {
+			return "{estado:false,msj:'"+e.getMessage()+"'}";
+		}
+		catch(NumberFormatException e){
+			return "{estado:false,msj:'Error validando parametros'}";
+		}	
+		catch(Exception e){
+			return "{estado:false,msj:'"+e.getMessage()+"'}";
+		}		
 	}
 	
 
