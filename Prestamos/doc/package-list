@@ -1,0 +1,6 @@
+co.edu.udea.prestamos.bl
+co.edu.udea.prestamos.dao
+co.edu.udea.prestamos.dao.interfaces
+co.edu.udea.prestamos.dto
+co.edu.udea.prestamos.excepcion
+co.edu.udea.prestamos.ws

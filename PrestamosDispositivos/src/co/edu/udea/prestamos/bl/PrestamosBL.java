@@ -91,6 +91,7 @@ public class PrestamosBL
 	 * RFN2 - Metodo para realizar la solicitud de prestamo
 	 * @param idUsuario Campo con la identificacion del usuario que desea hacer la solicitud
 	 * @param listIdEjemplares Campo con el arreglo de items/ejemplares que el usuario desea prestar
+	 * @param fechaPrestamo fecha para la cual se realiza la solicitud
 	 * @return Valor logico que permite conocer el resultado de la operacion
 	 * @throws ExcepcionPrestamos Ocurre cuando el usuario no es valido o se presento un error al insertar
 	 */

@@ -82,7 +82,7 @@ public class AdministradorBL
 	}
 	
 	/**
-	 * RFN3 & RFN5 - Metodo para cambiar el estado de cualquier peticion de prestamo
+	 * RFN3 y RFN5 - Metodo para cambiar el estado de cualquier peticion de prestamo
 	 * @param idPrestamo Campo con el numero identificador del comprobante de prestamo
 	 * @param nuevoEstado Campo con el codigo/numero del nuevo estado que se le quiere otorgar al prestamo
 	 * @throws ExcepcionPrestamos Ocurre cuando se tuvo un problema ya sea obtiendo el prestamo, el estado o actualizando los datos en la BD
