@@ -1,6 +1,8 @@
 package co.edu.udea.prestamos.ws;
 
 import java.rmi.RemoteException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -34,13 +36,14 @@ public class PrestamosWS
 	 * RFN2 - Servicio web para realizar la solicitud de prestamo
 	 * @param idUser Campo con la identificacion del usuario que desea hacer la solicitud
 	 * @param strListaEjemplares Campo con el arreglo de items/ejemplares que el usuario desea prestar
+	 * @param fechaPrestamo fecha en la se desea realizar el prestamo
 	 * @return String en formato JSON con un estado y msj correspondiente para devolver al cliente que se consume el servicio
 	 * @throws RemoteException Ocurre cuando el usuario no es valido o se presento un error al insertar
 	 */
 	@POST
 	@Path("solicitud")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String solicitud(@QueryParam("idUser")String idUser,@QueryParam("listaEjemplares")String strListaEjemplares) throws RemoteException
+	public String solicitud(@QueryParam("idUser")String idUser,@QueryParam("listaEjemplares")String strListaEjemplares,@QueryParam("fechaPrestamo")String fechaPrestamo) throws RemoteException
 	{
 		try{
 			int auxIdUser=Integer.parseInt(idUser);
@@ -49,8 +52,14 @@ public class PrestamosWS
 			for(int i=0;i<aux.length;i++){
 				listIdEjemplares.add(Integer.parseInt(aux[i]));
 			}
+			if(fechaPrestamo==null)throw new Exception("Parametros no validos");
+			if(fechaPrestamo.length()!=10)throw new Exception("Parametros no validos");
+			DateFormat formatter ; 
+			Date auxFechaPrestamo ; 
+			formatter = new SimpleDateFormat("yyyy-MM-dd");
+			auxFechaPrestamo = formatter.parse(fechaPrestamo);
 			
-			boolean result=prestamoBL.solicitud(auxIdUser, listIdEjemplares,new Date());
+			boolean result=prestamoBL.solicitud(auxIdUser, listIdEjemplares,auxFechaPrestamo);
 			
 			if(result)
 				return "{estado:true,msj:'Solicitud realizada correctamente'}";
