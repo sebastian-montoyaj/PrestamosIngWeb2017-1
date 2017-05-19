@@ -18,13 +18,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import co.edu.udea.prestamos.bl.PrestamosBL;
 import co.edu.udea.prestamos.excepcion.ExcepcionPrestamos;
 
+/**
+ * Servicios webs asociados a las tareas de prestamo
+ * @author César Muñoz Roldan
+ * 1.0 - 17/05/2017
+ */
 @Path("Prestamo")
 @Component
-public class PrestamosWS {
-	
+public class PrestamosWS
+{
 	@Autowired
 	PrestamosBL prestamoBL;
 	
+	/**
+	 * RFN2 - Servicio web para realizar la solicitud de prestamo
+	 * @param idUser Campo con la identificacion del usuario que desea hacer la solicitud
+	 * @param strListaEjemplares Campo con el arreglo de items/ejemplares que el usuario desea prestar
+	 * @return String en formato JSON con un estado y msj correspondiente para devolver al cliente que se consume el servicio
+	 * @throws RemoteException Ocurre cuando el usuario no es valido o se presento un error al insertar
+	 */
 	@POST
 	@Path("solicitud")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -58,9 +70,9 @@ public class PrestamosWS {
 	}
 	
 	/**
-	 * 
-	 * @param idPrestamo identificador del prestamo al cual se le cambiara el estado a "PRESTADO"
-	 * @return string en formato JSON con un estado y msj correspondiente para devolver al cliente que se consume el servicio
+	 * RFN9 - Servicio web para comprobar que se hace uso del prestamo
+	 * @param idPrestamo Identificador del prestamo al cual se le cambiara el estado a "PRESTADO"
+	 * @return String en formato JSON con un estado y msj correspondiente para devolver al cliente que se consume el servicio
 	 * @throws RemoteException Ocurre cuando se tuvo un problema en la transaccion contra la BD
 	 */
 	@POST
@@ -91,9 +103,9 @@ public class PrestamosWS {
 	}
 	
 	/**
-	 * 
-	 * @param idPrestamo identificador del prestamo al cual se le cambiara el estado de los ejemplares a "DISPONIBLES" y el estado del prestamo a "CADUCADO" 
-	 * @return string en formato JSON con un estado y msj correspondiente para devolver al cliente que se consume el servicio
+	 * RFN10 - Servicio web para comprobar devolución del dispositivos
+	 * @param idPrestamo Identificador del prestamo al cual se le cambiara el estado de los ejemplares a "DISPONIBLES" y el estado del prestamo a "CADUCADO" 
+	 * @return String en formato JSON con un estado y msj correspondiente para devolver al cliente que se consume el servicio
 	 * @throws RemoteException Ocurre cuando se tuvo un problema en la transaccion contra la BD
 	 */
 	@POST
