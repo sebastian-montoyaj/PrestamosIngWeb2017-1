@@ -58,7 +58,7 @@ public class AdministradorWS
 	 * RFN6 - Servicio web para registrar un nuevo elemento o dispositivo en el sistema
 	 * @param nombre Campo con el nombre del nuevo dispositivo
 	 * @param descripcion Campo con la descripcion del dispositivo. Aqui estaria el fabricante, marca y otros datos de interes del elemento
-	 * @param idTipo ampo con el numero de identificacion del TipoDispositivo que se le quiere asociar al nuevo elemento
+	 * @param idTipo Campo con el numero de identificacion del TipoDispositivo que se le quiere asociar al nuevo elemento
 	 * @return Mensaje que indica si se realizo con exito o no la operacion
 	 * @throws RemoteException Ocurre cuando hay un problema en la insercion de datos en la BD
 	 */
