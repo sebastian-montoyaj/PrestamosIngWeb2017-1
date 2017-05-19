@@ -25,7 +25,7 @@ public class AdministradorWS
 	AdministradorBL adminBL;
 	
 	/**
-	 * RFN3 & RFN5 - Servicio web para cambiar el estado de cualquier peticion de prestamo
+	 * RFN3 y RFN5 - Servicio web para cambiar el estado de cualquier peticion de prestamo
 	 * @param idPrestamo Campo con el numero identificador del comprobante de prestamo
 	 * @param nuevoEstado Campo con el codigo/numero del nuevo estado que se le quiere otorgar al prestamo
 	 * @return Mensaje que indica si se realizo con exito o no la operacion
