@@ -35,4 +35,8 @@
   	</param-value>
   </context-param>
   
+  <welcome-file-list>
+  	<welcome-file>prueba.html</welcome-file>
+  </welcome-file-list>
+  
 </web-app>

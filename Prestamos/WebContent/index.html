@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="ISO-8859-1">
+		<title>Sistema de Prestamos - Pagina de Inicio</title>
+		
+		<!-- Cargo angular -->
+		<script type="text/javascript" src="resources/js/angular.min.js"></script>
+		
+		<!-- Cargo un modulo adicional de angular para el ruteo o cambio de pagina -->
+		<script type="text/javascript" src="resources/js/angular-route.min.js"></script>
+		
+		<!-- Cargo el modulo para los cookies -->
+		<script type="text/javascript" src="resources/js/angular-cookies.min.js"></script>
+		
+		<!-- Y cargo el modulo controlador de esta pagina -->
+		<script type="text/javascript" src="resources/js/controladorUsuario.js"></script>
+		
+		<!-- Por otro lado, cargo los modulos necesarios para Bootstrap y el estilo de la pagina -->
+		<link rel="stylesheet" type="text/css" href="resources/css/bootstrap.min.css">
+		<script type="text/javascript" src="resources/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="resources/js/jquery-3.2.1.min.js"></script>
+	</head>
+	<body ng-app="usuario">
+		<div ng-view>
+			
+		</div>
+		<h1>
+			Esto es para probar el Bootstrap
+		</h1>
+	</body>
+</html>
