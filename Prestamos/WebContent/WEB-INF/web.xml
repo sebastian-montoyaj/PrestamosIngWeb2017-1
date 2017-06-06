@@ -20,7 +20,7 @@
   <!-- Esto registra todos los servlet que van a responder -->
   <servlet-mapping>
   	<servlet-name>Prestamos</servlet-name>
-  	<url-pattern>/*</url-pattern>
+  	<url-pattern>/ingweb/*</url-pattern>
   </servlet-mapping>
   
   <!-- Se agregan estas anotaciones para manejar el tema de comunicacion con Spring -->
@@ -34,9 +34,5 @@
   		classpath:/co/edu/udea/prestamos/config/SpringConf.xml
   	</param-value>
   </context-param>
-  
-  <welcome-file-list>
-  	<welcome-file>prueba.html</welcome-file>
-  </welcome-file-list>
   
 </web-app>
