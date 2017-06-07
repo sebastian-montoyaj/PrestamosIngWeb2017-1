@@ -139,4 +139,31 @@ public class UsuarioBL
             throw new RuntimeException(e);
         }
     }
+    
+    /**
+     * Metodo para obtener el rol que desempeña el usuario en el sistema
+     * @param identificador Campo con el identificador del usuario
+     * @return Valor con el nombre del rol asignado al usuario
+     * @throws ExcepcionPrestamos Ocurre cuando el identificador esta vacio o el usuario no existe en la base de datos
+     */
+    public String obtenerRolUsuario(String identificador) throws ExcepcionPrestamos
+    {
+    	// En primer lugar se revisa que el campo identificador no este vacio
+    	if (identificador == null || "".equals(identificador))
+		{
+			throw new ExcepcionPrestamos("Usuario y contraseña incorrectos!");
+		}
+    	
+    	// Ahora, creamos un objeto usuario que se inicializa con el resultado de la busqueda de tal usuario
+    	Usuario user = userDAO.obtener(Integer.parseInt(identificador));
+    	
+    	// Si el usuario de la consulta es nulo es porque no existe en la base de datos y entonces se debe abortar el metodo
+    	if (user == null)
+		{
+    		throw new ExcepcionPrestamos("Usuario no existe");
+		}
+    	
+    	// Si el usuario es valido entonces retornamos el nombre de su rol
+    	return user.getRol().getNombre();
+    }
 }
