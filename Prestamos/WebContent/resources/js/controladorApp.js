@@ -29,6 +29,26 @@ appMain.config(['$routeProvider', function($routeProvider){
         templateUrl: 'estadoUsuario.html',
         controller: 'HomeController'
     });
+	
+	$routeProvider.when('/prestamo', {
+        templateUrl: 'view/prestamo.html',
+        controller: 'ctrPrestamo'
+    });
+	
+	$routeProvider.when('/ejemplares', {
+        templateUrl: 'view/ejemplares.html',
+        controller: 'ctrEjemplares'
+    });
+	
+	$routeProvider.when('/comprobar-entrega', {
+        templateUrl: 'view/comprobarEntrega.html',
+        controller: 'ctrComprobarEntrega'
+    });
+	
+	$routeProvider.when('/comprobar-devolucion', {
+        templateUrl: 'view/comprobarDevolucion.html',
+        controller: 'ctrComprobarDevolucion'
+    });
 
 }]);
 
@@ -70,6 +90,31 @@ appMain.service('serviciosMain', function($http, $cookies, $cookieStore, $locati
 			return false;
 		}
 	};
+	
+	this.prestamos=function(){
+		return $http({
+			method:"GET",
+			url:"ingweb/Prestamo/prestamosSolicitud"
+		}).then(
+			function success(res){				
+				return res;
+			},function err(err){
+				return err;
+			})
+	}
+	
+	this.ejemplares=function(){
+		return $http({
+			method:"GET",
+			url:"ingweb/Prestamo/ejemplares"
+		}).then(
+			function success(res){
+				//$scope.ejemplares=res.data.jsonEjemplares;
+				return res;
+			},function err(err){
+				return err;
+			})
+	}
     
 });
 
@@ -172,3 +217,183 @@ appLogin.run(['$rootScope', '$cookies', function ($rootScope, $cookies) {
 		return false;
 	}
 }]);
+
+
+appMain.controller('ctrPrestamo',["$scope","$http","serviciosMain",function($scope,$http,serviciosMain){
+		
+	$scope.ejemplares=[];
+	
+	$scope.response={estado:false,msj:""};
+	
+	$scope.solicitar=function(){
+		$scope.response={estado:false,msj:""};
+		
+		var listaEjemplares="";
+		for(var item in $scope.ejemplares){			
+			if($scope.ejemplares[item].select!=undefined)
+				if($scope.ejemplares[item].select){
+					listaEjemplares+=$scope.ejemplares[item].id+"-";
+			}
+		}
+				
+		if(listaEjemplares.length<=0){
+			$scope.response={estado:false,msj:"Seleccione dispositivos a prestar"};
+			return;
+		}
+		
+		if($scope.fechaPrestamo==undefined){
+			$scope.response={estado:false,msj:"Fecha de prestamo no valida"};
+			document.getElementById('fechaPrestamo').focus();
+			return;
+		}
+		
+		var fechaPrestamo=$scope.fechaPrestamo.getFullYear();
+		
+		if(($scope.fechaPrestamo.getMonth()+1)<=9){
+			fechaPrestamo+="-0"+($scope.fechaPrestamo.getMonth()+1);
+		}
+		else{
+			fechaPrestamo+="-"+$scope.fechaPrestamo.getMonth();
+		}
+		
+		if(($scope.fechaPrestamo.getDate()+1)<=9){
+			fechaPrestamo+="-0"+($scope.fechaPrestamo.getDate()+1);
+		}
+		else{
+			fechaPrestamo+="-"+$scope.fechaPrestamo.getDate();
+		}
+		
+		var parametros={
+			idUser:2,
+			listaEjemplares:listaEjemplares.substring(0,listaEjemplares.length-1),
+			fechaPrestamo:fechaPrestamo
+		}
+				
+		$http({
+			method:"POST",
+			url:"ingweb/Prestamo/solicitud",
+			params:parametros,
+			header:{"Content-type":"application/json"}
+		}).then(
+			function success(res){				
+				$scope.response=res.data
+			},function err(err){
+				$scope.response={estado:false,msj:'Error en los datos'}
+			})
+	}
+	
+	serviciosMain.ejemplares().then(
+		function success(res){
+			$scope.ejemplares=res.data.jsonEjemplares;
+		},function err(err){
+			console.log(err);
+		}
+	)
+
+}])
+
+appMain.controller('ctrEjemplares',["$scope","$http","serviciosMain",function($scope,$http,serviciosMain){
+		
+	$scope.ejemplares=[];
+	
+	serviciosMain.ejemplares().then(
+			function success(res){
+				$scope.ejemplares=res.data.jsonEjemplares;
+			},function err(err){
+				console.log(err);
+			}
+		)
+	
+}])
+
+appMain.controller('ctrComprobarEntrega',["$scope","$http",'serviciosMain',function($scope,$http,serviciosMain){
+		
+	$scope.solicitudes=[];
+	
+	$scope.response={estado:false,msj:""};
+	
+	$scope.comprobarEntrega=function(){
+		$scope.response={estado:false,msj:""};
+		
+		var param;
+		for(var item in $scope.solicitudes){
+			
+			if($scope.solicitudes[item].select!=undefined){				
+				if($scope.solicitudes[item].select){
+					param={idPrestamo:$scope.solicitudes[item].id}
+					console.log(param);
+					$http({
+						method:"POST",
+						url:"ingweb/Prestamo/comprobarEntrega",
+						params:param,
+						header:{"Content-type":"application/json"}
+					}).then(
+						function success(res){
+							console.log(res)
+							$scope.response=res.data
+							$scope.serPrestamos();
+						},function err(err){
+							$scope.response={estado:false,msj:'Error en los datos'}
+							$scope.serPrestamos();
+						})
+				}
+			}
+		}
+	}
+	
+	$scope.serPrestamos=function(){
+		serviciosMain.prestamos().then(
+				function success(res){
+					$scope.solicitudes=res.data.jsonPrestamoSolicitudes;
+				},function err(err){
+					console.log(err);
+				})
+	}
+	$scope.serPrestamos();
+
+}])
+
+appMain.controller('ctrComprobarDevolucion',["$scope","$http",'serviciosMain',function($scope,$http,serviciosMain){
+		
+	$scope.solicitudes=[];
+	
+	$scope.response={estado:false,msj:""};
+	
+	$scope.comprobarDevolucion=function(){
+		$scope.response={estado:false,msj:""};
+		
+		var param;
+		for(var item in $scope.solicitudes){
+			if($scope.solicitudes[item].select!=undefined){				
+				if($scope.solicitudes[item].select){
+					param={idPrestamo:$scope.solicitudes[item].id}
+					$http({
+						method:"POST",
+						url:"ingweb/Prestamo/comprobarDevolucion",
+						params:param,
+						header:{"Content-type":undefined}
+					}).then(
+						function success(res){
+							console.log(res)
+							$scope.response=res.data
+							$scope.serPrestamos();
+						},function err(err){
+							$scope.response={estado:false,msj:'Error en los datos'}
+							$scope.serPrestamos();
+						})
+				}
+			}
+		}
+	}
+	
+	$scope.serPrestamos=function(){
+		serviciosMain.prestamos().then(
+				function success(res){
+					$scope.solicitudes=res.data.jsonPrestamoSolicitudes;
+				},function err(err){
+					console.log(err);
+				})
+	}
+	$scope.serPrestamos();
+
+}])

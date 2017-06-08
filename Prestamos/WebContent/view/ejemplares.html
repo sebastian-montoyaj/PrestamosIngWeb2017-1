@@ -1,0 +1,22 @@
+<div class="container table-bordered">
+	<div class="row">
+		<div class="col-md-3 form-group" ng-repeat="item in ejemplares">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>NOMBRE</th>
+						<th>ESTADO</th>					
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td ng-bind="item.id"></td>
+						<td ng-bind="item.nombre"></td>
+						<td ng-bind="item.estado"></td>					
+					</tr>
+				</tbody>		
+			</table>
+		</div>	
+	</div>
+</div>

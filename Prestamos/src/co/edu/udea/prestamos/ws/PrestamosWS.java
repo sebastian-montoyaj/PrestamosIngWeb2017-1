@@ -21,6 +21,7 @@ import co.edu.udea.prestamos.bl.PrestamosBL;
 import co.edu.udea.prestamos.dto.EjemplarDispositivo;
 import co.edu.udea.prestamos.dto.JsonEjemplares;
 import co.edu.udea.prestamos.dto.JsonPrestamoSolicitudes;
+import co.edu.udea.prestamos.dto.JsonResponse;
 import co.edu.udea.prestamos.dto.Prestamo;
 import co.edu.udea.prestamos.excepcion.ExcepcionPrestamos;
 
@@ -47,8 +48,9 @@ public class PrestamosWS
 	@POST
 	@Path("solicitud")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String solicitud(@QueryParam("idUser")String idUser,@QueryParam("listaEjemplares")String strListaEjemplares,@QueryParam("fechaPrestamo")String fechaPrestamo) throws RemoteException
+	public JsonResponse solicitud(@QueryParam("idUser")String idUser,@QueryParam("listaEjemplares")String strListaEjemplares,@QueryParam("fechaPrestamo")String fechaPrestamo) throws RemoteException
 	{
+		JsonResponse jsonResponse=null;
 		try{
 			int auxIdUser=Integer.parseInt(idUser);
 			List<Integer>listIdEjemplares=new ArrayList<Integer>();
@@ -66,20 +68,21 @@ public class PrestamosWS
 			boolean result=prestamoBL.solicitud(auxIdUser, listIdEjemplares,auxFechaPrestamo);
 			
 			if(result)
-				return "{estado:true,msj:'Solicitud realizada correctamente'}";
+				jsonResponse=new JsonResponse(true,"Solicitud realizada correctamente");
 			else
-				return "{estado:false,msj:'No fue posible realizar la solicitud'}";
+				jsonResponse=new JsonResponse(false,"No fue posible realizar la solicitud");
 			
 		}
 		catch(NumberFormatException e){
-			return "{estado:false,msj:'Error validando parametros'}";
+			jsonResponse=new JsonResponse(false,e.getMessage());
 		}
 		catch (ExcepcionPrestamos e) {
-			return "{estado:false,msj:'"+e.getMessage()+"'}";
+			jsonResponse=new JsonResponse(false,e.getMessage());
 		}
 		catch(Exception e){
-			return "{estado:false,msj:'"+e.getMessage()+"'}";
+			jsonResponse=new JsonResponse(false,e.getMessage());
 		}
+		return jsonResponse;
 	}
 	
 	/**
@@ -91,28 +94,28 @@ public class PrestamosWS
 	@POST
 	@Path("comprobarEntrega")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String comprobarEntrega(@QueryParam("idPrestamo")String idPrestamo) throws RemoteException
+	public JsonResponse comprobarEntrega(@QueryParam("idPrestamo")String idPrestamo) throws RemoteException
 	{
+		JsonResponse jsonResponse=null;
 		try{						
 			int auxIdPrestamo=Integer.parseInt(idPrestamo);
 			boolean result=prestamoBL.comprobarEntrega(auxIdPrestamo);
 			if(result)
-				return "{estado:true,msj:'Comprobación exitosa'}";
+				jsonResponse=new JsonResponse(true,"Comprobación exitosa");
 			else
-				return "{estado:false,msj:'No fue posible comprobar la entrega de los ejemplares'}";
+				jsonResponse=new JsonResponse(false,"No fue posible comprobar la entrega de los ejemplares");
 			
 		}
 		catch (ExcepcionPrestamos e) {
-			//throw new RemoteException("Error comprobando la entrega de los ejemplares",e);
-			return "{estado:false,msj:'"+e.getMessage()+"'}";
+			jsonResponse=new JsonResponse(false,e.getMessage());
 		}
 		catch(NumberFormatException e){
-			return "{estado:false,msj:'Error validando parametros'}";
+			jsonResponse=new JsonResponse(false,e.getMessage());
 		}
 		catch(Exception e){
-			return "{estado:false,msj:'"+e.getMessage()+"'}";
-			//throw new Exception("Error validando parametros",e);
-		}		
+			jsonResponse=new JsonResponse(false,e.getMessage());
+		}
+		return jsonResponse;
 	}
 	
 	/**
@@ -124,26 +127,28 @@ public class PrestamosWS
 	@POST
 	@Path("comprobarDevolucion")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String comprobarDevolucion(@QueryParam("idPrestamo")String idPrestamo) throws RemoteException
+	public JsonResponse comprobarDevolucion(@QueryParam("idPrestamo")String idPrestamo) throws RemoteException
 	{
+		JsonResponse jsonResponse=null;
 		try{						
 			int auxIdPrestamo=Integer.parseInt(idPrestamo);
-			boolean result=prestamoBL.comprobarDevolucion(auxIdPrestamo);
+			boolean result=prestamoBL.comprobarDevolucion(auxIdPrestamo);			
 			if(result)
-				return "{estado:true,msj:'Comprobación de devolucion exitosa'}";
+				jsonResponse=new JsonResponse(true,"Comprobación de devolucion exitosa");
 			else
-				return "{estado:false,msj:'No fue posible comprobar la devolucion del prestamo'}";
+				jsonResponse=new JsonResponse(false,"No fue posible comprobar la devolucion del prestamo");
 			
-		}
+		}		
 		catch (ExcepcionPrestamos e) {
-			return "{estado:false,msj:'"+e.getMessage()+"'}";
+			jsonResponse=new JsonResponse(false,e.getMessage());
 		}
 		catch(NumberFormatException e){
-			return "{estado:false,msj:'Error validando parametros'}";
-		}	
+			jsonResponse=new JsonResponse(false,e.getMessage());
+		}
 		catch(Exception e){
-			return "{estado:false,msj:'"+e.getMessage()+"'}";
-		}		
+			jsonResponse=new JsonResponse(false,e.getMessage());
+		}
+		return jsonResponse;
 	}
 	
 	@GET

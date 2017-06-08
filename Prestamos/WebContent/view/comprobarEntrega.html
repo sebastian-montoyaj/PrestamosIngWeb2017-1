@@ -1,0 +1,39 @@
+<div class="container table-bordered">
+	
+	<div class="row form-group">
+		<div class="col-md-3">
+			<button class="btn btn-success btn-md" ng-click="comprobarEntrega()">Comprobar Entrega</button>
+		</div>
+	</div>
+	
+	<div class="row form-group">
+		<div class="col-md-12">
+			<div class="alert" ng-if="response.msj.length>0" 
+			ng-class="{'alert-success':response.estado,'alert-danger':!response.estado}" ng-bind="response.msj"></div>
+		</div>
+	</div>
+	<div class="row form-group">
+		<div class="col-md-6 form-group" ng-repeat="item in solicitudes">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>FECHA PRESTAMO</th>
+						<th>FECHA SOLICITUD</th>
+						<th>ESTADO</th>
+						<th></th>				
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td ng-bind="item.id"></td>
+						<td ng-bind="item.fechaPrestamo.substring(0,10)"></td>
+						<td ng-bind="item.fechaSolicitud.substring(0,10)"></td>
+						<td ng-bind="item.estado"></td>
+						<td><input type="checkbox" ng-model="item.select"></td>
+					</tr>
+				</tbody>		
+			</table>
+		</div>	
+	</div>
+</div>

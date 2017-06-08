@@ -2,17 +2,17 @@
 	<h2>Servicios disponibles</h2>
 	<ul class="nav nav-pills nav-stacked" ng-if="esAdmin()">
 		<li role="presentation"><a href="#!estadoUsuario">Cambiar estado usuario</a></li>
-		<li role="presentation"><a href="" ng-click="   ">Estudiar prestamo</a></li>
+		<li role="presentation"><a href="#!prestamo">Estudiar prestamo</a></li>
 		<li role="presentation"><a href="" ng-click="   ">Ver dispositivos</a></li>
 		<li role="presentation"><a href="" ng-click="   ">Registrar dispositivo </a></li>
-		<li role="presentation"><a href="" ng-click="   ">Ver ejemplares</a></li>
+		<li role="presentation"><a href="#!ejemplares">Ver ejemplares</a></li>
 		<li role="presentation"><a href="" ng-click="   ">Registrar ejemplar</a></li>
 		<li role="presentation"><a href="" ng-click="   ">Remover ejemplar</a></li>
-		<li role="presentation"><a href="" ng-click="   ">Confirmar entrega</a></li>
-		<li role="presentation"><a href="" ng-click="   ">Confirmar devolucion</a></li>		
+		<li role="presentation"><a href="#!comprobar-entrega">Confirmar entrega</a></li>
+		<li role="presentation"><a href="#!comprobar-devolucion">Confirmar devolucion</a></li>		
 	</ul>
 	
 	<ul class="nav nav-pills nav-stacked" ng-if="!esAdmin()">
-		<li role="presentation"><a href="" ng-click="   ">Prestamo dispositivos</a></li>
+		<li role="presentation"><a href="#!prestamo">Prestamo dispositivos</a></li>
 	</ul>
 </div>
