@@ -191,6 +191,7 @@ appMain.controller('HomeController', function($scope, $location, $cookies, servi
     $scope.tipoDisp = '';
     $scope.idDisp = '';
     $scope.estadoEjem = '';
+    $scope.idEjemplar = '';
 	
 	$scope.esAdmin = function(){
     	return $scope.rol == "Administrador"
@@ -253,10 +254,25 @@ appMain.controller('HomeController', function($scope, $location, $cookies, servi
         )
     }
     
+    $scope.retirarEjemplar = function(){
+        serviciosMain.darDeBajaEjemplar($scope.idEjemplar).then(
+    		function success(data){
+    			if(data.data != "" && data.data == "Se realizo la eliminacion del ejemplar exitosamente!"){
+    				alert("Se realizo la eliminacion exitosamente!")
+        			location.href = 'main.html';
+    				return;
+    			}
+    			else{
+    				alert('Error inesperado, vuelva a intentarlo!');
+    			}
+    		},
+    		
+    		function failure(data){
+    			alert('Error al llamar el servicio.');
+    		}
+        )
+    }
     
-    
-    
-
 });
 
 // Por ultimo, cada vez que se cambie de pagina se verifica que el usuario si este registrado
