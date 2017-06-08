@@ -3,10 +3,11 @@
  */
 
 // En primer lugar, creamos el modulo angular que controlara el comportamiento de los usuarios y le inyectamos los modulos: ngCookies y ngRoute
-var appUsuario = angular.module('usuario', ['ngRoute', 'ngCookies']);
+var appLogin = angular.module('login', ['ngRoute', 'ngCookies']);
+var appMain = angular.module('main', ['ngRoute', 'ngCookies']);
 
 // Inmediatamente, especificamos la configuración de ruteo de nuestro sistema, por lo tanto:
-appUsuario.config(['$routeProvider', function($routeProvider){
+appLogin.config(['$routeProvider', function($routeProvider){
 	
 	// La ruta '/' estara asociada a la pagina: index.html y cuyo controlador sera: Login
 	$routeProvider.when('/', {
@@ -14,22 +15,30 @@ appUsuario.config(['$routeProvider', function($routeProvider){
         controller: 'Login'
     });
 	// Ejemplo ruta: http://localhost:8080/Prestamos/
-	
-	// La ruta '/home' estara asociada a la pagina: main.html y cuyo controlador sera: homeController
-	$routeProvider.when('/home', {
-        templateUrl: 'main.html',
-        controller: 'HomeController'
-    });
-   
 }]);
 
-// Despues, registramos un servicio llamado serviciosUsuario el cual tiene la mision de invocar los servicios web que se tienen creados y obtener su resultado
-appUsuario.service('serviciosUsuario', function($http, $cookies, $cookieStore, $location){
+appMain.config(['$routeProvider', function($routeProvider){
+	// La ruta '/home' estara asociada a la pagina: main.html y cuyo controlador sera: homeController
+	$routeProvider.when('/', {
+        templateUrl: 'opciones.html',
+        controller: 'HomeController'
+    });
+	// Ejemplo ruta: http://localhost:8080/Prestamos/#!/home
 	
+	$routeProvider.when('/estadoUsuario', {
+        templateUrl: 'estadoUsuario.html',
+        controller: 'HomeController'
+    });
+
+}]);
+
+
+// Despues, registramos un servicio llamado serviciosUsuario el cual tiene la mision de invocar los servicios web que se tienen creados y obtener su resultado
+appLogin.service('serviciosUsuario', function($http, $cookies, $cookieStore, $location){
 	// Este servicio tiene la tarea de tomar un id y una contraseña para llamar el servicio de validacion de usuarios
     this.autenticar = function(id, passwd){
         return $http({
-            url: 'http://localhost:8080/Prestamos/ingweb/Usuario/validarUsuario',
+            url: 'ingweb/Usuario/validarUsuario',
             method: 'POST',
             params: {identificador: id, password: passwd}
         })
@@ -38,23 +47,26 @@ appUsuario.service('serviciosUsuario', function($http, $cookies, $cookieStore, $
     // Este servicio tiene la tarea de invocar el servicio de consulta de rol de un usuario
     this.obtenerRolUsuario = function(id){
     	return $http({
-            url: 'http://localhost:8080/Prestamos/ingweb/Usuario/obtenerRolUsuario',
+            url: 'ingweb/Usuario/obtenerRolUsuario',
             method: 'GET',
             params: {identificador: id}
         })
     };
     
+});
+
+appMain.service('serviciosMain', function($http, $cookies, $cookieStore, $location){    
     // Este servicio tiene la mision de remover la informacion de sesion guardada en la cookie y volver a la pantalla de inicio del sistema
     this.cerrarSesion = function(){
         $cookieStore.remove("identificador"),
         $cookieStore.remove("rol");
-        $location.path("/");
+        location.href = 'index.html'
     };
     
     // Este servicio revisa que el usuario si este conectado y en caso que no entonces redirige el usuario a la pantalla de inicio del sistema
     this.validarEstado = function(){
 		if(typeof($cookies.get('identificador')) == 'undefined' || $cookies.get('identificador') == ""){
-			$location.url("/");
+			location.href = 'index.html'
 			return false;
 		}
 	};
@@ -62,7 +74,7 @@ appUsuario.service('serviciosUsuario', function($http, $cookies, $cookieStore, $
 });
 
 // Ahora, se crea el controlador Login cuya funcion es proveer el metodo de autenticacion del usuario y guardar la informacion de session en una cookie
-appUsuario.controller('Login', function($scope, $location, $cookies, $window, serviciosUsuario){
+appLogin.controller('Login', function($scope, $location, $cookies, $window, serviciosUsuario){
 	// Entonces, se crean unas variables que se asocian por medio de ng-model a campos de un formulario de inicio de sesion
 	$scope.identificador = '';
     $scope.password = '';
@@ -92,11 +104,13 @@ appUsuario.controller('Login', function($scope, $location, $cookies, $window, se
     					function success(data){
     						
     						$cookies.put('rol', data.data, {expires: exp});
+    						location.href = 'main.html';
     					}
     				)
     				
     				// Y se redirige el usuario a la pagina principal del sistema
-    				$location.url('/home');
+//    				$location.url('/home');
+    				
     				return;
     			}
     			
@@ -117,26 +131,13 @@ appUsuario.controller('Login', function($scope, $location, $cookies, $window, se
 });
 
 // 
-appUsuario.controller('HomeController', function($scope, $location, $cookies, serviciosUsuario){
-	//devolvemos a la vista el id de usuario y el rol
-    $scope.identificador = $cookies.get('identificador');
-    $scope.rol = $cookies.get('rol');
+appMain.controller('HomeController', function($scope, $location, $cookies, serviciosMain){
 	
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-	// Por ultimo, se crea un metodo logout el cual llama el servicio que limpia la cookie
-    $scope.logout = function(){
-    	serviciosUsuario.cerrarSesion();
+    $scope.esAdmin = function(){
+    	return $scope.rol == "Administrador"
     }
+    
+
 });
 
 
@@ -150,8 +151,24 @@ appUsuario.controller('HomeController', function($scope, $location, $cookies, se
 
 // Por ultimo, cada vez que se cambie de pagina se verifica que el usuario si este registrado
 // NOTA: El proposito de esto es para evitar que los usuarios no puedan escribir rutas y pasar a secciones no autorizadas
-appUsuario.run(['$rootScope', 'serviciosUsuario', function ($rootScope, serviciosUsuario) {
+appMain.run(['$rootScope', '$cookies', 'serviciosMain', function ($rootScope, $cookies, serviciosMain) {
+	//devolvemos a la vista el id de usuario y el rol
+	$rootScope.identificador = $cookies.get('identificador');
+	$rootScope.rol = $cookies.get('rol');
+	
 	$rootScope.$on('$routeChangeStart', function(event){
-    	serviciosUsuario.validarEstado();
+		serviciosMain.validarEstado();
     })
+    
+    // Por ultimo, se crea un metodo logout el cual llama el servicio que limpia la cookie
+    $rootScope.logout = function(){
+    	serviciosMain.cerrarSesion();
+    }
+}]);
+
+appLogin.run(['$rootScope', '$cookies', function ($rootScope, $cookies) {
+	if(typeof($cookies.get('identificador')) != 'undefined' && $cookies.get('identificador') != ""){
+		location.href = 'main.html'
+		return false;
+	}
 }]);
