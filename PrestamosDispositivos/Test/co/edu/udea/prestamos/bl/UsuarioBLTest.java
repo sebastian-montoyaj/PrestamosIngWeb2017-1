@@ -55,4 +55,20 @@ public class UsuarioBLTest
 			fail(e.getMessage());
 		}
 	}
+	
+	@Test
+	public void testObtenerRolUsuario()
+	{
+		try
+		{
+			String resul = userBL.obtenerRolUsuario("1");			
+			assertTrue(resul.equals("Investigador"));
+		}
+		catch(ExcepcionPrestamos e) // En caso de error
+		{
+			// Recupero el mensaje y la prueba falla
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
+	}
 }

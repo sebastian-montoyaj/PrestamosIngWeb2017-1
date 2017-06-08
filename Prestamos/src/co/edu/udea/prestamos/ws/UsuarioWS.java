@@ -2,6 +2,7 @@ package co.edu.udea.prestamos.ws;
 
 //Importes necesarios para la clase
 import java.rmi.RemoteException;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -52,7 +53,7 @@ public class UsuarioWS
 	}
 	
 	// Ejemplo de URL para la prueba:
-	// http://localhost:8080/Prestamos/Usuario/validarUsuario?identificador=1&password=1234567
+	// http://localhost:8080/Prestamos/ingweb/Usuario/validarUsuario?identificador=1&password=1234567
 	
 	/**
 	 * RFN8 - Servicio web para cambiar el estado (inhabilitar/habilitar) del usuario
@@ -80,5 +81,25 @@ public class UsuarioWS
 	}
 	
 	// Ejemplo de URL para la prueba:
-	// http://localhost:8080/Prestamos/Usuario/cambiarEstadoUsuario?identificador=1&nuevoEstado=2
+	// http://localhost:8080/Prestamos/ingweb/Usuario/cambiarEstadoUsuario?identificador=1&nuevoEstado=2
+	
+	@GET // Esta anotacion indica que va a responder al metodo GET de http
+	@Path("obtenerRolUsuario") // Esta anotacion es para indicar cual url sera la que invoque este servicio
+	@Produces(MediaType.TEXT_PLAIN) // Esta anotacion es para indicar que tipo de resultado o retorno se va a devolver al navegador
+	// @QueryParam : Y esta anotacion es para saber que parametros se van a extraer del la url y que seran usados para esta clase
+	public String obtenerRolUsuario(@QueryParam("identificador")String identificador) throws RemoteException
+	{
+		try
+		{
+			return userBL.obtenerRolUsuario(identificador); // Tan solo se invoca y se retorna el resultado del metodo que consulta el rol del usuario
+		}
+		catch (ExcepcionPrestamos e) // En caso de error entonces se lanza una excepcion
+		{
+			throw new RemoteException("Se tuvo un problema con la consulta del rol" + e);
+		}
+		
+	}
+	
+	// Ejemplo de URL para la prueba:
+	// http://localhost:8080/Prestamos/ingweb/Usuario/obtenerRolUsuario?identificador=1
 }
