@@ -1,0 +1,52 @@
+<div class="container table-bordered">
+	<div class="row form-group">
+		<div class="col-md-3">
+			<label>Fecha Prestamo</label>
+			<input type="date" class="form-control" ng-model="fechaPrestamo" id="fechaPrestamo">
+		</div>
+	</div>
+	<div class="row form-group">
+		<div class="col-md-3">
+			<button class="btn btn-success btn-md" ng-click="solicitar()">Solicitar</button>
+		</div>
+	</div>
+	<div class="row form-group">
+		<div class="col-md-12">
+			<div class="alert" ng-if="response.msj.length>0" 
+			ng-class="{'alert-success':response.estado,'alert-danger':!response.estado}" ng-bind="response.msj"></div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-3 form-group" ng-repeat="item in ejemplares">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>NOMBRE</th>
+						<th>ESTADO</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td ng-bind="item.id"></td>
+						<td ng-bind="item.nombre"></td>
+						<td ng-bind="item.estado"></td>
+						<td><input type="checkbox" ng-model="item.select"> </td>
+					</tr>
+				</tbody>		
+			</table>
+		</div>	
+	</div>
+	<div class="row form-group">
+		<div class="col-md-12">
+			<div class="alert" ng-if="response.msj.length>0" 
+			ng-class="{'alert-success':response.estado,'alert-danger':!response.estado}" ng-bind="response.msj"></div>
+		</div>
+	</div>
+	<div class="row form-group">
+		<div class="col-md-3">
+			<button class="btn btn-success btn-md" ng-click="solicitar()">Solicitar</button>
+		</div>
+	</div>
+</div>

@@ -42,12 +42,12 @@ public class EjemplarDispositivoDAOImpl implements EjemplarDispositivoDAO
 		try
 		{
 			session = sessionFactory.getCurrentSession(); // Se inicia(obtiene) la sesion
-			Criteria criteria = session.createCriteria(Dispositivo.class); // Se crea un criterio en donde traeremos todos los Dispositivo
+			Criteria criteria = session.createCriteria(EjemplarDispositivo.class); // Se crea un criterio en donde traeremos todos los Dispositivo
 			listaEjemplarDispositivo = criteria.list(); // Y luego llevamos el resultado de la consulta a la lista creada anteriormente
 		}
 		catch(HibernateException e) // En caso de error recuperamos el error y lanzamos la excepcion
 		{
-			throw new ExcepcionPrestamos("Error consultando los Estado Dispositivo del sistema!", e);
+			throw new ExcepcionPrestamos("Error consultando los los ejemplares!", e);
 		}
 		
 		return listaEjemplarDispositivo; // Por ultimo, retornamos la lista vacia o de Estado Dispositivo que recuperamos de la BD

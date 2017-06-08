@@ -18,6 +18,7 @@ import co.edu.udea.prestamos.dto.EjemplarDispositivo;
 import co.edu.udea.prestamos.dto.EstadoDispositivo;
 import co.edu.udea.prestamos.dto.EstadoPrestamo;
 import co.edu.udea.prestamos.dto.ItemsPrestamo;
+import co.edu.udea.prestamos.dto.JsonEjemplares;
 import co.edu.udea.prestamos.dto.Prestamo;
 import co.edu.udea.prestamos.dto.Usuario;
 import co.edu.udea.prestamos.excepcion.ExcepcionPrestamos;
@@ -279,5 +280,26 @@ public class PrestamosBL
 		}
 	}
 	
-
+	public List<EjemplarDispositivo> ejemplares() throws ExcepcionPrestamos{
+		try{
+			List<EjemplarDispositivo> listEjemplaresDispositivos = new ArrayList<EjemplarDispositivo>();
+			listEjemplaresDispositivos=ejemplarDispositivoDAO.obtenerTodo();
+			return listEjemplaresDispositivos;			
+		}
+		catch(ExcepcionPrestamos e){
+			throw new ExcepcionPrestamos("No fue posible consultar los dispositivos");
+		}
+	}
+	
+	public List<Prestamo> prestamosSolicitudes() throws ExcepcionPrestamos{
+		try{
+			List<Prestamo> listPrestamo = new ArrayList<Prestamo>();
+			listPrestamo=prestamoDAO.obtenerTodo();
+			return listPrestamo;			
+		}
+		catch(ExcepcionPrestamos e){
+			throw new ExcepcionPrestamos("No fue posible consultar los prestamos");
+		}
+	}
+	
 }

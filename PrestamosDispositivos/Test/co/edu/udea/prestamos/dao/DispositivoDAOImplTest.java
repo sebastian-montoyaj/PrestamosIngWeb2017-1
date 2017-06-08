@@ -32,7 +32,7 @@ public class DispositivoDAOImplTest {
 		
 		try
 		{
-			listaDispositivos = dispositivoDAO.obtenerTodo(); // Ahora, inicializo la lista previa a partir del resultado del metodo que deseo evaluar
+			listaDispositivos = dispositivoDAO.obtenerTodo(); // Ahora, inicializo la lista previa a partir del resultado del metodo que deseo evaluar			
 			assertTrue(listaDispositivos.size() > 0); // Se considerara correcto el metodo si hay por lo menos un elemento 
 		}
 		catch(Exception e)

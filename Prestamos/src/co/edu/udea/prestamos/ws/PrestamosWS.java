@@ -18,6 +18,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import co.edu.udea.prestamos.bl.PrestamosBL;
+import co.edu.udea.prestamos.dto.EjemplarDispositivo;
+import co.edu.udea.prestamos.dto.JsonEjemplares;
+import co.edu.udea.prestamos.dto.JsonPrestamoSolicitudes;
+import co.edu.udea.prestamos.dto.Prestamo;
 import co.edu.udea.prestamos.excepcion.ExcepcionPrestamos;
 
 /**
@@ -142,5 +146,62 @@ public class PrestamosWS
 		}		
 	}
 	
-
+	@GET
+	@Path("ejemplares")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<JsonEjemplares> ejemplares() throws RemoteException	
+	{				
+		List<JsonEjemplares> ejemplares = new ArrayList<JsonEjemplares>();
+		
+		try{		
+									
+			for(EjemplarDispositivo ejemplarDispositivo:prestamoBL.ejemplares()){
+				
+				JsonEjemplares jsonEjemplares=
+						new JsonEjemplares(
+								ejemplarDispositivo.getIdEjemplar(),
+								ejemplarDispositivo.getDispositivo().getNombre(),
+								ejemplarDispositivo.getEstado().getNombre());
+				 						
+				ejemplares.add(jsonEjemplares);
+ 			}			
+		}						
+		catch (ExcepcionPrestamos e) {
+			throw new RemoteException(e.getMessage());
+		}
+		catch(Exception e){
+			throw new RemoteException("No fue posibles obtener la lista de dispositivos");
+		}
+		return ejemplares;		
+	}
+	
+	@GET
+	@Path("prestamosSolicitud")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<JsonPrestamoSolicitudes> prestamosSolicitud() throws RemoteException	
+	{				
+		List<JsonPrestamoSolicitudes> listPrestamos = new ArrayList<JsonPrestamoSolicitudes>();		
+		try{
+			for(Prestamo objPrestamo:prestamoBL.prestamosSolicitudes()){
+				
+				JsonPrestamoSolicitudes jsonPrestamoSolicitudes=
+						new JsonPrestamoSolicitudes(
+								objPrestamo.getIdPrestamo(),
+								objPrestamo.getUsuarioSolicita().getNombre(),
+								objPrestamo.getFechaSolicitud().toString(),
+								objPrestamo.getFechaPrestamo().toString(),
+								objPrestamo.getEstado().getNombre());
+				 						
+				listPrestamos.add(jsonPrestamoSolicitudes);
+ 			}
+		}					
+		catch (ExcepcionPrestamos e) {
+			throw new RemoteException(e.getMessage());
+		}
+		catch(Exception e){
+			throw new RemoteException("No fue posibles obtener la lista de prestamos");
+		}
+		return listPrestamos;		
+	}
 }
+

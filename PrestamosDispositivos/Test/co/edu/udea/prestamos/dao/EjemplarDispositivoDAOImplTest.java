@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.udea.prestamos.dao.interfaces.EjemplarDispositivoDAO;
+import co.edu.udea.prestamos.dto.Dispositivo;
 import co.edu.udea.prestamos.dto.EjemplarDispositivo;
 
 /**
@@ -35,7 +36,7 @@ public class EjemplarDispositivoDAOImplTest {
 		
 		try
 		{
-			listaEjemplarDispositivo = ejemplarDispositivoDAO.obtenerTodo(); // Ahora, inicializo la lista previa a partir del resultado del metodo que deseo evaluar
+			listaEjemplarDispositivo = ejemplarDispositivoDAO.obtenerTodo(); // Ahora, inicializo la lista previa a partir del resultado del metodo que deseo evaluar			
 			assertTrue(listaEjemplarDispositivo.size() > 0); // Se considerara correcto el metodo si hay por lo menos un elemento 
 		}
 		catch(Exception e)
