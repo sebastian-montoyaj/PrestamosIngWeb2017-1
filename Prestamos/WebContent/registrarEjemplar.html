@@ -1,0 +1,20 @@
+<div align="center">
+	<h2>Inscribir nuevo ejemplar</h2>
+	<br>
+	<form name="formEditUser">
+		<label>Dispositivo asociado:</label>
+		<br>
+		<input type="number" placeholder="Codigo dispositivo" required ng-model="idDisp">
+		<br><br>
+		<label>Estado del ejemplar:</label>
+		<br>
+		<select ng-model="estadoEjem" required>
+			<option value="1">Disponible</option>
+			<option value="2">En reparacion</option>
+			<option value="3">Dado de baja</option>
+			<option value="4">Prestado</option>
+		</select>
+		<br><br>
+		<button type="submit" class="btn btn-primary" ng-click="guardarEjemplar()">Aceptar</button>
+	</form>
+</div>

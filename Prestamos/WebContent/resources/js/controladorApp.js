@@ -2,11 +2,11 @@
  * @author Sebastian Montoya Jimenez
  */
 
-// En primer lugar, creamos el modulo angular que controlara el comportamiento de los usuarios y le inyectamos los modulos: ngCookies y ngRoute
+// En primer lugar, creamos dos modulos para controlar el comportamiento del login y de las opciones de los usuarios
 var appLogin = angular.module('login', ['ngRoute', 'ngCookies']);
 var appMain = angular.module('main', ['ngRoute', 'ngCookies']);
 
-// Inmediatamente, especificamos la configuración de ruteo de nuestro sistema, por lo tanto:
+// Inmediatamente, especificamos la configuración de ruteo de nuestro sistema para ambos modulos, por lo tanto:
 appLogin.config(['$routeProvider', function($routeProvider){
 	
 	// La ruta '/' estara asociada a la pagina: index.html y cuyo controlador sera: Login
@@ -23,7 +23,7 @@ appMain.config(['$routeProvider', function($routeProvider){
         templateUrl: 'opciones.html',
         controller: 'HomeController'
     });
-	// Ejemplo ruta: http://localhost:8080/Prestamos/#!/home
+	// Ejemplo ruta: http://localhost:8081/Prestamos/main.html#!/
 	
 	$routeProvider.when('/estadoUsuario', {
         templateUrl: 'estadoUsuario.html',
@@ -50,10 +50,30 @@ appMain.config(['$routeProvider', function($routeProvider){
         controller: 'ctrComprobarDevolucion'
     });
 
+	// Ejemplo ruta: http://localhost:8081/Prestamos/main.html#!/estadoUsuario
+	
+	$routeProvider.when('/registrarDispositivo', {
+        templateUrl: 'registrarDispositivo.html',
+        controller: 'HomeController'
+    });
+	// Ejemplo ruta: http://localhost:8081/Prestamos/main.html#!/registrarDispositivo
+	
+	$routeProvider.when('/registrarEjemplar', {
+        templateUrl: 'registrarEjemplar.html',
+        controller: 'HomeController'
+    });
+	// Ejemplo ruta: http://localhost:8081/Prestamos/main.html#!/registrarEjemplar
+	
+	$routeProvider.when('/removerEjemplar', {
+        templateUrl: 'removerEjemplar.html',
+        controller: 'HomeController'
+    });
+	// Ejemplo ruta: http://localhost:8081/Prestamos/main.html#!/removerEjemplar
+
 }]);
 
 
-// Despues, registramos un servicio llamado serviciosUsuario el cual tiene la mision de invocar los servicios web que se tienen creados y obtener su resultado
+// Despues, registramos los servicios que utilizaran los dos modulos de angular que se han creado
 appLogin.service('serviciosUsuario', function($http, $cookies, $cookieStore, $location){
 	// Este servicio tiene la tarea de tomar un id y una contraseña para llamar el servicio de validacion de usuarios
     this.autenticar = function(id, passwd){
@@ -115,6 +135,42 @@ appMain.service('serviciosMain', function($http, $cookies, $cookieStore, $locati
 				return err;
 			})
 	}
+
+	// Este servicio se encarga de modificar actualizar el estado de un usuario
+	this.modificarEstadoUsuario = function(id, estado){
+        return $http({
+            url: 'ingweb/Usuario/cambiarEstadoUsuario',
+            method: 'POST',
+            params: {identificador: id, nuevoEstado: estado}
+        })
+    };
+    
+    // Este servicio tiene la tarea de registrar un nuevo dispositivo en la base de datos
+    this.registrarDispositivo = function(nom, desc, idTipo){
+        return $http({
+            url: 'ingweb/Administrador/registrarNuevoDispositivo',
+            method: 'POST',
+            params: {nombre: nom, descripcion: desc, idTipo: idTipo}
+        })
+    };
+    
+    // Este servicio por su parte es quien registra un nuevo ejemplar
+    this.registrarEjemplar = function(idEjem, codEstado){
+        return $http({
+            url: 'ingweb/Administrador/registrarNuevoEjemplar',
+            method: 'POST',
+            params: {idDispositivo: idEjem, codigoEstadoDispositivo: codEstado}
+        })
+    };
+    
+    // Y este servicio es el encargado de "eliminar" un elemento de prestamo de la base de datos
+    this.darDeBajaEjemplar = function(idEjem){
+        return $http({
+            url: 'ingweb/Administrador/removerEjemplar',
+            method: 'POST',
+            params: {idEjemplarDispositivo: idEjem}
+        })
+    };
     
 });
 
@@ -149,12 +205,9 @@ appLogin.controller('Login', function($scope, $location, $cookies, $window, serv
     					function success(data){
     						
     						$cookies.put('rol', data.data, {expires: exp});
-    						location.href = 'main.html';
+    						location.href = 'main.html'; // Y se redirige el usuario a la pagina principal del sistema
     					}
     				)
-    				
-    				// Y se redirige el usuario a la pagina principal del sistema
-//    				$location.url('/home');
     				
     				return;
     			}
@@ -175,24 +228,98 @@ appLogin.controller('Login', function($scope, $location, $cookies, $window, serv
     
 });
 
-// 
+// Tambien se crea un controlador para la ventana principal y las ventanas que ya realizan alguna funcionalidad
 appMain.controller('HomeController', function($scope, $location, $cookies, serviciosMain){
+	$scope.idUsuario = '';
+    $scope.estadoU = '';
+    $scope.nomDisp = '';
+    $scope.descDisp = '';
+    $scope.tipoDisp = '';
+    $scope.idDisp = '';
+    $scope.estadoEjem = '';
+    $scope.idEjemplar = '';
 	
-    $scope.esAdmin = function(){
+	$scope.esAdmin = function(){
     	return $scope.rol == "Administrador"
     }
     
-
+    $scope.guardarEstadoUsuario = function(){   	
+        serviciosMain.modificarEstadoUsuario($scope.idUsuario, $scope.estadoU).then(
+    		function success(data){
+    			if(data.data != "" && data.data == "Se realizo el cambio de estado exitosamente!"){
+    				alert("Se realizo el cambio exitosamente!")
+        			location.href = 'main.html';
+    				return;
+    			}
+    			else{
+    				alert('Error inesperado, vuelva a intentarlo!');
+    			}
+    		},
+    		
+    		function failure(data){
+    			alert('Error al llamar el servicio.');
+    		}
+        )
+    }
+    
+    $scope.guardarDispositivo = function(){
+        serviciosMain.registrarDispositivo($scope.nomDisp, $scope.descDisp, $scope.tipoDisp).then(
+    		function success(data){
+    			if(data.data != "" && data.data == "Se realizo la inserccion del nuevo dispositivo exitosamente!"){
+    				alert("Se realizo el registro exitosamente!")
+        			location.href = 'main.html';
+    				return;
+    			}
+    			else{
+    				alert('Error inesperado, vuelva a intentarlo!');
+    			}
+    		},
+    		
+    		function failure(data){
+    			alert('Error al llamar el servicio.');
+    		}
+        )
+    }
+    
+    $scope.guardarEjemplar = function(){
+        serviciosMain.registrarEjemplar($scope.idDisp, $scope.estadoEjem).then(
+    		function success(data){
+    			if(data.data != "" && data.data == "Se realizo la inserccion del nuevo ejemplar exitosamente!"){
+    				alert("Se realizo el registro exitosamente!")
+        			location.href = 'main.html';
+    				return;
+    			}
+    			else{
+    				alert('Error inesperado, vuelva a intentarlo!');
+    			}
+    		},
+    		
+    		function failure(data){
+    			alert('Error al llamar el servicio.');
+    		}
+        )
+    }
+    
+    $scope.retirarEjemplar = function(){
+        serviciosMain.darDeBajaEjemplar($scope.idEjemplar).then(
+    		function success(data){
+    			if(data.data != "" && data.data == "Se realizo la eliminacion del ejemplar exitosamente!"){
+    				alert("Se realizo la eliminacion exitosamente!")
+        			location.href = 'main.html';
+    				return;
+    			}
+    			else{
+    				alert('Error inesperado, vuelva a intentarlo!');
+    			}
+    		},
+    		
+    		function failure(data){
+    			alert('Error al llamar el servicio.');
+    		}
+        )
+    }
+    
 });
-
-
-
-
-
-
-
-
-
 
 // Por ultimo, cada vez que se cambie de pagina se verifica que el usuario si este registrado
 // NOTA: El proposito de esto es para evitar que los usuarios no puedan escribir rutas y pasar a secciones no autorizadas

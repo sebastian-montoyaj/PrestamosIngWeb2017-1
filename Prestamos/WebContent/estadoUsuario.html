@@ -1,1 +1,19 @@
-fsdfsdf
+<div align="center">
+	<h2>Editar estado usuarios</h2>
+	<br>
+	<form name="formEditUser">
+		<label>Identificador Usuario:</label>
+		<br>
+		<input type="number" placeholder="Identificador Usuario" required ng-model="idUsuario">
+		<br><br>
+		<label>Estado Usuario:</label>
+		<br>
+		<select ng-model="estadoU" required>
+			<option value="1">Habilitado</option>
+			<option value="2">Sancionado</option>
+			<option value="3">Retirado</option>
+		</select>
+		<br><br>
+		<button type="submit" class="btn btn-primary" ng-click="guardarEstadoUsuario()">Aceptar</button>
+	</form>
+</div>

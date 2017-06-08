@@ -1,0 +1,27 @@
+<div align="center">
+	<h2>Inscribir nuevo dispositivo</h2>
+	<br>
+	<form name="formEditUser">
+		<label>Nombre dispositivo:</label>
+		<br>
+		<input type="text" placeholder="Ej: Baromometro" required ng-model="nomDisp">
+		<br><br>
+		<label>Descripcion del dispositivo:</label>
+		<br>
+		<textarea rows="5" placeholder="Taylor 1735 - Modelo 2001" required ng-model="descDisp">
+		</textarea> 
+		<br><br>
+		<label>Tipo de dispositivo:</label>
+		<br>
+		<select ng-model="tipoDisp" required>
+			<option value="1">Tecnologia</option>
+			<option value="2">Desechable</option>
+			<option value="3">Instrumento de medicion/analisis</option>
+			<option value="4">Sensor</option>
+			<option value="5">Recipiente</option>
+			<option value="6">Otros</option>
+		</select>
+		<br><br>
+		<button type="submit" class="btn btn-primary" ng-click="guardarDispositivo()">Aceptar</button>
+	</form>
+</div>
