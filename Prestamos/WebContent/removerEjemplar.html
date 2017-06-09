@@ -1,11 +1,29 @@
-<div align="center">
-	<h2>Retirar ejemplar</h2>
-	<br>
-	<form name="formEditUser">
-		<label>Codigo ejemplar:</label>
-		<br>
-		<input type="number" placeholder="Codigo ejemplar" required ng-model="idEjemplar">
-		<br><br>
-		<button type="submit" class="btn btn-primary" ng-click="retirarEjemplar()">Aceptar</button>
-	</form>
+<div class="container table-bordered">
+	<center>
+		<h2>Retirar ejemplar</h2>	
+	</center>
+	<br/>
+	<div class="row">
+		<div class="col-md-4 form-group" ng-repeat="item in ejemplares">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>NOMBRE</th>
+						<th>ESTADO</th>	
+						<th></th>			
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td ng-bind="item.id"></td>
+						<td ng-bind="item.nombre"></td>
+						<td ng-bind="item.estado"></td>	
+						<td><button type="button" class="btn btn-danger btn-xs" 
+						ng-click="retirarEjemplar(item.id)">Retirar</button></td>				
+					</tr>
+				</tbody>		
+			</table>
+		</div>	
+	</div>
 </div>

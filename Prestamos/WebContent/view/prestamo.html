@@ -1,15 +1,19 @@
 <div class="container table-bordered">
-	<div class="row form-group">
-		<div class="col-md-3">
-			<label>Fecha Prestamo</label>
-			<input type="date" class="form-control" ng-model="fechaPrestamo" id="fechaPrestamo">
-		</div>
-	</div>
+	<center>
+		<h2>Solicitar Dispositivos</h2>	
+	</center>
+	<br/>
 	<div class="row form-group">
 		<div class="col-md-3">
 			<button class="btn btn-success btn-md" ng-click="solicitar()">Solicitar</button>
 		</div>
 	</div>
+	<div class="row form-group">
+		<div class="col-md-3">
+			<label>Fecha Prestamo</label>
+			<input type="date" class="form-control" ng-model="fechaPrestamo" id="fechaPrestamo">
+		</div>
+	</div>	
 	<div class="row form-group">
 		<div class="col-md-12">
 			<div class="alert" ng-if="response.msj.length>0" 

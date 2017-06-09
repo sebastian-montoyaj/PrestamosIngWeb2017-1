@@ -9,6 +9,7 @@ import java.util.ListIterator;
 import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.udea.prestamos.dao.UsuarioDAOImpl;
+import co.edu.udea.prestamos.dao.interfaces.DispositivoDAO;
 import co.edu.udea.prestamos.dao.interfaces.EjemplarDispositivoDAO;
 import co.edu.udea.prestamos.dao.interfaces.EstadoPrestamoDAO;
 import co.edu.udea.prestamos.dao.interfaces.ItemsPrestamoDAO;
@@ -37,6 +38,7 @@ public class PrestamosBL
 	private EstadoPrestamoDAO estadoPrestamoDAO;
 	private ItemsPrestamoDAO itemsPrestamoDAO;
 	private EjemplarDispositivoDAO ejemplarDispositivoDAO;
+	private DispositivoDAO dispositivoDAO;
 	private static final int COD_ROL_INVESTIGADOR=2;
 	private static final int CODESTADOPRESTADO=5;
 	private static final int COD_ESTADO_DISPOSITIVO_DISPONIBLE=1;
@@ -48,6 +50,14 @@ public class PrestamosBL
 		
 	}
 	
+	public DispositivoDAO getDispositivoDAO() {
+		return dispositivoDAO;
+	}
+
+	public void setDispositivoDAO(DispositivoDAO dispositivoDAO) {
+		this.dispositivoDAO = dispositivoDAO;
+	}
+
 	public PrestamoDAO getPrestamoDAO() {
 		return prestamoDAO;
 	}
@@ -299,6 +309,17 @@ public class PrestamosBL
 		}
 		catch(ExcepcionPrestamos e){
 			throw new ExcepcionPrestamos("No fue posible consultar los prestamos");
+		}
+	}
+	
+	public List<Dispositivo> dispositivos() throws ExcepcionPrestamos{
+		try{
+			List<Dispositivo> listDispositivo = new ArrayList<Dispositivo>();
+			listDispositivo=dispositivoDAO.obtenerTodo();
+			return listDispositivo;			
+		}
+		catch(ExcepcionPrestamos e){
+			throw new ExcepcionPrestamos("No fue posible consultar los dispositivos");
 		}
 	}
 	

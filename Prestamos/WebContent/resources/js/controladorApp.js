@@ -69,7 +69,12 @@ appMain.config(['$routeProvider', function($routeProvider){
         controller: 'HomeController'
     });
 	// Ejemplo ruta: http://localhost:8081/Prestamos/main.html#!/removerEjemplar
-
+	
+	$routeProvider.when('/dispositivos', {
+        templateUrl: 'dispositivos.html',
+        controller: 'ctrDispositivos'
+    });
+	
 }]);
 
 
@@ -171,6 +176,13 @@ appMain.service('serviciosMain', function($http, $cookies, $cookieStore, $locati
             params: {idEjemplarDispositivo: idEjem}
         })
     };
+    
+    this.dispositivos=function(){
+    	 return $http({
+             url: 'ingweb/Prestamo/dispositivos',
+             method: 'GET'
+         })
+    }
     
 });
 
@@ -300,8 +312,8 @@ appMain.controller('HomeController', function($scope, $location, $cookies, servi
         )
     }
     
-    $scope.retirarEjemplar = function(){
-        serviciosMain.darDeBajaEjemplar($scope.idEjemplar).then(
+    $scope.retirarEjemplar = function(id){
+        serviciosMain.darDeBajaEjemplar(id).then(
     		function success(data){
     			if(data.data != "" && data.data == "Se realizo la eliminacion del ejemplar exitosamente!"){
     				alert("Se realizo la eliminacion exitosamente!")
@@ -318,6 +330,16 @@ appMain.controller('HomeController', function($scope, $location, $cookies, servi
     		}
         )
     }
+    
+    $scope.ejemplares=[];
+	
+	serviciosMain.ejemplares().then(
+			function success(res){
+				$scope.ejemplares=res.data.jsonEjemplares;
+			},function err(err){
+				console.log(err);
+			}
+		)
     
 });
 
@@ -523,4 +545,16 @@ appMain.controller('ctrComprobarDevolucion',["$scope","$http",'serviciosMain',fu
 	}
 	$scope.serPrestamos();
 
+}])
+
+appMain.controller('ctrDispositivos',["$scope","$http",'serviciosMain',function($scope,$http,serviciosMain){
+	$scope.dispositivos=[];
+	serviciosMain.dispositivos().then(
+			function success(res){
+				$scope.dispositivos=res.data.jsonDispositivos
+			},
+			function err(err){
+				console.log(err)
+			}
+	)
 }])

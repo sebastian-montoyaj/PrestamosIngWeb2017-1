@@ -4,15 +4,24 @@
 	<form name="formEditUser">
 		<label>Identificador Usuario:</label>
 		<br>
-		<input type="number" placeholder="Identificador Usuario" required ng-model="idUsuario">
+		<div class="row">
+			<div class="col-md-2 col-md-offset-5">
+				<input type="number" placeholder="Identificador Usuario" required ng-model="idUsuario" class="form-control">
+			</div>
+		</div>
 		<br><br>
 		<label>Estado Usuario:</label>
 		<br>
-		<select ng-model="estadoU" required>
-			<option value="1">Habilitado</option>
-			<option value="2">Sancionado</option>
-			<option value="3">Retirado</option>
-		</select>
+		<div class="row">
+			<div class="col-md-2 col-md-offset-5">
+				<select ng-model="estadoU" required class="form-control">
+					<option value="">Seleccione</option>
+					<option value="1">Habilitado</option>
+					<option value="2">Sancionado</option>
+					<option value="3">Retirado</option>
+				</select>
+			</div>
+		</div>
 		<br><br>
 		<button type="submit" class="btn btn-primary" ng-click="guardarEstadoUsuario()">Aceptar</button>
 	</form>

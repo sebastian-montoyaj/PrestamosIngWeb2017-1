@@ -18,7 +18,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import co.edu.udea.prestamos.bl.PrestamosBL;
+import co.edu.udea.prestamos.dto.Dispositivo;
 import co.edu.udea.prestamos.dto.EjemplarDispositivo;
+import co.edu.udea.prestamos.dto.JsonDispositivos;
 import co.edu.udea.prestamos.dto.JsonEjemplares;
 import co.edu.udea.prestamos.dto.JsonPrestamoSolicitudes;
 import co.edu.udea.prestamos.dto.JsonResponse;
@@ -208,5 +210,34 @@ public class PrestamosWS
 		}
 		return listPrestamos;		
 	}
+	
+	@GET
+	@Path("dispositivos")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<JsonDispositivos> dispositivos() throws RemoteException	
+	{				
+		List<JsonDispositivos> listJsonDispositivos = new ArrayList<JsonDispositivos>();
+		
+		try{		
+									
+			for(Dispositivo dispositivo:prestamoBL.dispositivos()){
+				
+				JsonDispositivos jsonDispositivos=
+						new JsonDispositivos(
+								dispositivo.getNombre(),
+								dispositivo.getIdDispositivo());
+				 						
+				listJsonDispositivos.add(jsonDispositivos);
+ 			}			
+		}						
+		catch (ExcepcionPrestamos e) {
+			throw new RemoteException(e.getMessage());
+		}
+		catch(Exception e){
+			throw new RemoteException("No fue posibles obtener la lista de dispositivos");
+		}
+		return listJsonDispositivos;		
+	}
+	
 }
 

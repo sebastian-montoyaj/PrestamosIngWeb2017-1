@@ -115,6 +115,7 @@
 		<property name="estadoPrestamoDAO" ref="EstadoPrestamoDAO" />
 		<property name="itemsPrestamoDAO" ref="ItemsPrestamoDAO" />
 		<property name="ejemplarDispositivoDAO" ref="EjemplarDispositivoDAO" />
+		<property name="dispositivoDAO" ref="DispositivoDAO" />
 	</bean>
 	
 	<!-- Con este atributo es para decirle a Spring que se van a realizar transacciones y hacia quien -->

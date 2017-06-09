@@ -20,6 +20,16 @@
 		<link rel="stylesheet" type="text/css" href="resources/css/bootstrap.min.css">
 		<script type="text/javascript" src="resources/js/jquery-3.2.1.min.js"></script>
 		<script type="text/javascript" src="resources/js/bootstrap.min.js"></script>
+		<style type="text/css">			
+			.footer{
+				position:fixed;
+				width:100%;
+				bottom:0px;
+				text-align:center;
+				background: #F8F9F9;
+				margin-top:20px;
+			}					
+		</style>
 	</head>
 	<body ng-app="main">
 		<nav class="navbar navbar-default">
@@ -37,9 +47,21 @@
 		      </form>
 		    </div>
 		  </div>
-		</nav>
+		</nav>		
 		<div ng-view>
 			
+		</div>		
+		<div class="footer">	
+			<table align="center">	
+				<tr>
+					<td>	
+					Desarrollado por:<br/>César Muñoz y Sebastian Montoya S.A.S
+					</td>
+					<td valign="middle">
+						<img src="resources/img/iconoApp.png" width="30px" height="30px">
+					</td>
+				</tr>
+			</table>
 		</div>
 	</body>
 </html>

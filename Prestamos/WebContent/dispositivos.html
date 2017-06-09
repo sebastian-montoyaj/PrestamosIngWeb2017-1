@@ -1,23 +1,21 @@
 <div class="container table-bordered">
 	<center>
-		<h2>Ejemplares</h2>	
+		<h2>Dispositivos</h2>	
 	</center>
 	<br/>
 	<div class="row">
-		<div class="col-md-3 form-group" ng-repeat="item in ejemplares">
+		<div class="col-md-3 form-group" ng-repeat="item in dispositivos">
 			<table class="table table-hover">
 				<thead>
 					<tr>
 						<th>ID</th>
-						<th>NOMBRE</th>
-						<th>ESTADO</th>					
+						<th>NOMBRE</th>										
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
 						<td ng-bind="item.id"></td>
-						<td ng-bind="item.nombre"></td>
-						<td ng-bind="item.estado"></td>					
+						<td ng-bind="item.nombre"></td>										
 					</tr>
 				</tbody>		
 			</table>
